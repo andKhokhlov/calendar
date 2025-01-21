@@ -1,0 +1,36 @@
+:host {
+  display: block;
+  padding: 20px 12px;
+  width: 100%;
+}
+
+.list_wrapper_duo {
+  padding-bottom: 10px;
+  display: flex;
+  gap: 30px;
+  margin-bottom: 10px;
+  border-bottom: 1px solid #d1d5d8;
+}
+
+label {
+  display: inline-block;
+  width: auto; /* Ширина зависит от содержимого */
+  min-width: 120px; /* Минимальная ширина для отступов */
+  max-width: 100%; /* Ширина не будет превышать родительский элемент */
+}
+
+tui-combo-box {
+  width: 100%; /* Занимает всю доступную ширину */
+  min-width: 150px; /* Минимальная ширина для удобства */
+}
+
+.main_content {
+  margin-top: 10px;
+  display: flex;
+  justify-content: center;
+  .noselected {
+    display: flex;
+    align-items: center !important;
+    width: 500px;
+  }
+}

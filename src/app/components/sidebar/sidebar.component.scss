@@ -1,0 +1,46 @@
+:host {
+  display: block;
+  padding: 20px 12px;
+  border-right: 1px solid #f9f9f9;
+  background-color: #f8f8f8;
+}
+
+.nav {
+  border-bottom: 1px solid #d1d5d8;
+  padding: 10px;
+}
+.main-menu-list {
+  display: grid;
+  grid-gap: 8px;
+  list-style: none;
+}
+
+.menu-item {
+  padding: 10px 12px;
+  cursor: pointer;
+  background: none;
+  display: grid;
+  grid-gap: 12px;
+  color: var(--ligth-color);
+  border: none;
+  font-weight: 700;
+  font-size: 14px;
+  line-height: 24px;
+  width: 100%;
+  align-items: center;
+  text-align: left;
+  border-radius: 12px;
+  &:hover,
+  &:focus-visible {
+    background: var(--dark-hover-color);
+    color: var(--primary-color);
+
+    .menu-item svg {
+      color: var(--dark-hover-color);
+    }
+  }
+  .menu-item-svg {
+    height: 16px;
+    width: 16px;
+  }
+}

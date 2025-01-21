@@ -1,0 +1,25 @@
+<div class="block">
+  <div *ngFor="let day of schedule" class="mini-block">
+    <div tuiAppearance="floating" tuiCardLarge class="block-block">
+      <header tuiHeader class="header">
+        <h1 tuiTitle>
+          {{ day.day }}
+          <span tuiSubtitle>Расписание</span>
+        </h1>
+      </header>
+
+      <div *ngFor="let subject of day.subjects" class="actions">
+        <div tuiTitle class="actions_bot">
+          <div class="row">
+            <div class="column">
+              {{ subject.name }}
+            </div>
+            <div class="column">Преподаватель: {{ subject.teacher }}</div>
+            <div class="column">Кабинет: {{ subject.audience }}</div>
+          </div>
+          <div tuiSubtitle>Время: {{ subject.time }}</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

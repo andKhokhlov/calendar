@@ -1,0 +1,12 @@
+<img src="assets/images/logo.png" alt="Image" />
+
+<div class="sidebar-container"><h2>КНКГ Расписание</h2></div>
+<nav class="nav">
+  <div class="main-menu-list">
+    <li *ngFor="let menuItem of menuItems">
+      <button class="menu-item" [routerLink]="menuItem.link">
+        <span> {{ menuItem.label }}</span>
+      </button>
+    </li>
+  </div>
+</nav>
