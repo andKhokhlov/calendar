@@ -1,38 +1,67 @@
-.block {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 20px;
-  .block-block {
-    min-height: 300px;
-  }
-}
-header {
-  border-bottom: d1d5d8;
-}
-
-.mini-block {
-  flex: 2 2 calc(50% - 20px);
+table[tuiTable] {
+  width: 100%;
+  table-layout: fixed;
+  border-radius: 10px;
+  overflow: hidden;
+  border-collapse: separate;
+  border-spacing: 0;
+  background-color: white;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Добавление тени */
 }
 
-.row {
+table[tuiTable] th,
+table[tuiTable] td {
+  padding: 10px;
+  text-align: center;
+  border-right: 1px solid #f0f0f0; /* Разделитель столбцов */
+}
+
+table[tuiTable] th {
+  border-bottom: 1px solid #f0f0f0; /* Разделитель строк */
+}
+
+table[tuiTable] td {
+  color: #333;
+  border-bottom: 1px solid #f0f0f0; /* Разделитель строк */
+}
+
+table[tuiTable] tbody tr {
+  border-bottom: 1px solid #f0f0f0; /* Разделитель строк */
+}
+
+table[tuiTable] td div {
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
 }
 
-.column {
-  flex: 1;
-  padding: 5px 10px;
-  text-align: left;
+tui-badge {
+  display: flex;
+  justify-content: flex-end;
 }
 
-.actions {
-  margin-bottom: 10px;
-  margin-top: 0px !important;
+tui-card-large {
+  width: 100%;
+  padding: 10px;
+  background-color: #fafafa;
+  border-radius: 8px;
+}
 
-  border-bottom: 1px solid #d1d5d8;
+tui-card-large header {
+  display: flex;
+  align-items: baseline;
+}
 
-  &:last-child {
-    border-bottom: none;
-  }
+tui-card-large h1 {
+  font-size: 16px;
+  font-weight: bold;
+}
+
+tui-card-large span {
+  font-size: 12px;
+  color: gray;
+}
+
+tui-avatar {
+  margin-left: 10px;
 }

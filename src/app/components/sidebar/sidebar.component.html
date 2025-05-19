@@ -1,7 +1,29 @@
-<img src="assets/images/logo.png" alt="Image" />
+<div class="sidebar_container">
+  <h1 tuiTitle="m" tuiTatle>КНГК Расписание</h1>
+  <span class="sidebar_container_description"
+    >Доступ к расписанию занятий и информации об учителях в одном месте</span
+  >
+</div>
 
-<div class="sidebar-container"><h2>КНКГ Расписание</h2></div>
-<nav class="nav">
+<nav class="nav_bar">
+  <button
+    class="nav_bar_button"
+    routerLink="/"
+    routerLinkActive="active"
+    [routerLinkActiveOptions]="{ exact: true }"
+  >
+    Расписание
+  </button>
+  <button
+    class="nav_bar_button"
+    routerLink="/actor"
+    routerLinkActive="active"
+    [routerLinkActiveOptions]="{ exact: true }"
+  >
+    Преподаватель
+  </button>
+</nav>
+<!-- <nav class="nav">
   <div class="main-menu-list">
     <li *ngFor="let menuItem of menuItems">
       <button class="menu-item" [routerLink]="menuItem.link">
@@ -9,4 +31,4 @@
       </button>
     </li>
   </div>
-</nav>
+</nav> -->

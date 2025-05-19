@@ -1,0 +1,27 @@
+.login_form_container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh; /* вся высота экрана */
+  background-color: #f9f9f9; /* фон по желанию */
+}
+
+.login_form {
+  padding: 2rem;
+  border-radius: 1rem;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  background-color: white;
+  width: 100%;
+  max-width: 400px;
+}
+.login_form_input {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+.login_form_btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}

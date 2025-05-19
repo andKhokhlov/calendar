@@ -1,25 +1,67 @@
-<div class="block">
-  <div *ngFor="let day of schedule" class="mini-block">
-    <div tuiAppearance="floating" tuiCardLarge class="block-block">
-      <header tuiHeader class="header">
-        <h1 tuiTitle>
-          {{ day.day }}
-          <span tuiSubtitle>Расписание</span>
-        </h1>
-      </header>
+<table
+  tuiTable
+  style="
+    width: 100%;
+    table-layout: fixed;
+    border-radius: 10px;
+    overflow: hidden;
+    border-collapse: separate;
+    border-spacing: 0;
+  "
+>
+  <thead>
+    <tr>
+      <th tuiTh style="width: 90px">Время</th>
+      <th tuiTh>Понедельник</th>
+      <th tuiTh>Вторник</th>
+      <th tuiTh>Среда</th>
+      <th tuiTh>Четверг</th>
+      <th tuiTh>Пятница</th>
+      <th tuiTh>Суббота</th>
+    </tr>
+  </thead>
+  <tbody tuiTbody>
+    <tr *ngFor="let time of uniqueTimes">
+      <!-- Время -->
+      <td tuiTd>
+        <tui-badge
+          size="s"
+          appearance="positive"
+          tuiTitle
+          style="display: flex; justify-content: flex-end"
+        >
+          {{ time }}
+        </tui-badge>
+      </td>
 
-      <div *ngFor="let subject of day.subjects" class="actions">
-        <div tuiTitle class="actions_bot">
-          <div class="row">
-            <div class="column">
-              {{ subject.name }}
+      <!-- Уроки на каждый день -->
+      <td tuiTd *ngFor="let day of days">
+        <ng-container
+          *ngIf="getSubjectByDayAndTime(day, time) as subject; else emptyCell"
+        >
+          <div style="display: flex; justify-content: center">
+            <div tuiAppearance="floating" tuiCardLarge>
+              <header tuiHeader style="display: flex; align-items: baseline">
+                <h1 tuiTitle>
+                  {{ subject.name }}
+                  <span tuiSubtitle>{{ subject.teacher }}</span>
+                </h1>
+                <aside tuiAccessories>
+                  <tui-avatar
+                    style="margin-left: 10px"
+                    appearance="primary"
+                    [src]="subject.icon"
+                    size="xs"
+                  ></tui-avatar>
+                </aside>
+              </header>
             </div>
-            <div class="column">Преподаватель: {{ subject.teacher }}</div>
-            <div class="column">Кабинет: {{ subject.audience }}</div>
           </div>
-          <div tuiSubtitle>Время: {{ subject.time }}</div>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
+        </ng-container>
+        <ng-template #emptyCell>
+          <div style="text-align: center; color: gray">—</div>
+        </ng-template>
+      </td>
+    </tr>
+  </tbody>
+</table>

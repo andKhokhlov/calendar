@@ -13,7 +13,12 @@ import { TuiTable } from '@taiga-ui/addon-table';
 import { CalendarComponent } from '../calendar/calendar.component';
 import { schedule } from '../../data/schedule';
 import { NgIf } from '@angular/common';
-import { TuiCardLarge, TuiCell, TuiHeader } from '@taiga-ui/layout';
+import {
+  TuiBlockStatus,
+  TuiCardLarge,
+  TuiCell,
+  TuiHeader,
+} from '@taiga-ui/layout';
 import { TuiAppearance } from '@taiga-ui/core';
 @Component({
   selector: 'app-board',
@@ -29,6 +34,7 @@ import { TuiAppearance } from '@taiga-ui/core';
     NgIf,
     TuiCardLarge,
     TuiAppearance,
+    TuiBlockStatus,
   ],
   templateUrl: './board.component.html',
   styleUrls: ['./board.component.scss'],
@@ -103,89 +109,31 @@ export class BoardComponent implements OnInit {
     { name: '24П-1', specialtyKey: 'specialty9' },
   ];
 
-  protected readonly schedule = [
-    {
-      day: 'Понедельник',
-      subjects: [
-        {
-          name: 'Математика',
-          teacher: 'Иванов',
-          time: '9:00-10:30',
-          group: '21М-1',
-        },
-        {
-          name: 'Физика',
-          teacher: 'Петров',
-          time: '10:45-12:15',
-          group: '21М-1',
-        },
-        {
-          name: 'Информатика',
-          teacher: 'Сидоров',
-          time: '12:30-14:00',
-          group: '22М-1',
-        },
-      ],
-    },
-    {
-      day: 'Вторник',
-      subjects: [
-        {
-          name: 'История',
-          teacher: 'Васильев',
-          time: '9:00-10:30',
-          group: '21Г-1',
-        },
-        {
-          name: 'Английский язык',
-          teacher: 'Смирнов',
-          time: '10:45-12:15',
-          group: '22Г-1',
-        },
-      ],
-    },
-  ];
-  protected readonly stringify = (item: { name: string }): string =>
-    `${item.name}`;
-  protected readonly stringify2 = (group: { name: string }): string =>
-    `${group.name}`;
-  protected availableGroups: { name: string }[] = [];
-  protected selectedGroup: string = ''; // Для хранения выбранной группы
-  protected filteredSchedule = schedule; // По умолчанию показываем все расписания
-
   ngOnInit(): void {
     this.control.valueChanges.subscribe((value) => {
-      if (value) {
-        this.filterGroupsBySpecialty(value.key);
-      } else {
-        this.availableGroups = [];
-      }
+      this.availableGroups = value
+        ? this.groups.filter((group) => group.specialtyKey === value.key)
+        : [];
     });
 
     this.control2.valueChanges.subscribe((group) => {
-      if (group) {
-        this.filterScheduleByGroup(group.name);
-      } else {
-        this.filteredSchedule = []; // Если группа не выбрана, очищаем расписание
-      }
+      this.filteredSchedule = group
+        ? this.filterScheduleByGroup(group.name)
+        : [];
     });
   }
 
-  private filterGroupsBySpecialty(key: string): void {
-    this.availableGroups = this.groups.filter(
-      (group) => group.specialtyKey === key
-    );
-  }
-
-  private filterScheduleByGroup(groupName: string): void {
-    this.filteredSchedule = schedule.map((day) => ({
+  private filterScheduleByGroup(groupName: string) {
+    return schedule.map((day) => ({
       ...day,
-      subjects: day.subjects.filter((subject) => subject.group === groupName),
+      subjects:
+        day.subjects?.filter((subject) => subject?.group === groupName) ?? [],
     }));
   }
 
-  // Проверка, выбрана ли группа
-  isGroupSelected(): boolean {
-    return !!this.control2.value;
-  }
+  protected readonly stringify = (item: { name: string }): string => item.name;
+  protected readonly stringify2 = (group: { name: string }): string =>
+    group.name;
+  protected availableGroups: { name: string }[] = [];
+  protected filteredSchedule = schedule;
 }

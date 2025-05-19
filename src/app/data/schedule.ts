@@ -1,20 +1,38 @@
+import { group } from '@angular/animations';
+
 export const schedule = [
+  // M
+  //22
   {
     day: 'Понедельник',
     subjects: [
       {
-        name: 'ПОПД',
-        time: '08:00-09:30',
-        teacher: 'Иванов И.И.',
-        group: '21М-1',
-        audience: '48',
+        name: 'КЛ.ЧАС',
+        teacher: 'Галахов',
+        time: '8:30-9:15',
+        group: '22М-1',
+        icon: '',
       },
       {
-        name: 'Математика',
-        time: '10:00-11:30',
-        teacher: 'Петров П.П.',
-        group: '21М-1',
-        audience: '38',
+        name: 'ОРГ.РЕМ.РАБ.',
+        teacher: 'Юдин И.А.',
+        time: '9:25-11:00',
+        group: '22М-1',
+        icon: '',
+      },
+      {
+        name: 'ИТПД',
+        teacher: 'Макаревич Е.М',
+        time: '11:40-13:15',
+        group: '22М-1',
+        icon: '',
+      },
+      {
+        name: 'ОХРАНА ТРУДА',
+        teacher: 'Тимохина И.В',
+        time: '13:25-15:00',
+        group: '22М-1',
+        icon: '',
       },
     ],
   },
@@ -22,94 +40,32 @@ export const schedule = [
     day: 'Вторник',
     subjects: [
       {
-        name: 'Экономика',
-        time: '09:00-10:30',
-        teacher: 'Сидоров С.С.',
+        name: 'КЛ.ЧАС',
+        teacher: 'Галахов',
+        time: '8:30-9:15',
         group: '22М-1',
-        audience: '12',
+        icon: '',
       },
       {
-        name: 'История',
-        time: '11:00-12:30',
-        teacher: 'Николаев Н.Н.',
-        group: '21М-1',
-        audience: '54',
-      },
-    ],
-  },
-  {
-    day: 'Среда',
-    subjects: [
-      {
-        name: 'Физика',
-        time: '08:00-09:30',
-        teacher: 'Попов П.П.',
+        name: 'ОРГ.РЕМ.РАБ.',
+        teacher: 'Юдин И.А.',
+        time: '9:25-11:00',
         group: '22М-1',
-        audience: '23',
+        icon: '',
       },
       {
-        name: 'Химия',
-        time: '10:00-11:30',
-        teacher: 'Захаров З.З.',
-        group: '21М-1',
-        audience: '12',
-      },
-    ],
-  },
-  {
-    day: 'Четверг',
-    subjects: [
-      {
-        name: 'Физика',
-        time: '08:00-09:30',
-        teacher: 'Попов П.П.',
+        name: 'ИТПД',
+        teacher: 'Макаревич Е.М',
+        time: '11:40-13:15',
         group: '22М-1',
-        audience: '33',
+        icon: '',
       },
       {
-        name: 'Химия',
-        time: '10:00-11:30',
-        teacher: 'Захаров З.З.',
-        group: '21М-1',
-        audience: '29',
-      },
-    ],
-  },
-  {
-    day: 'Пятница',
-    subjects: [
-      {
-        name: 'Физика',
-        time: '08:00-09:30',
-        teacher: 'Попов П.П.',
+        name: 'ОХРАНА ТРУДА',
+        teacher: 'Тимохина И.В',
+        time: '13:25-15:00',
         group: '22М-1',
-        audience: '43',
-      },
-      {
-        name: 'Химия',
-        time: '10:00-11:30',
-        teacher: 'Захаров З.З.',
-        group: '21М-1',
-        audience: '48',
-      },
-    ],
-  },
-  {
-    day: 'Суббота',
-    subjects: [
-      {
-        name: 'Физика',
-        time: '08:00-09:30',
-        teacher: 'Попов П.П.',
-        group: '21М-1',
-        audience: '48',
-      },
-      {
-        name: 'Химия',
-        time: '10:00-11:30',
-        teacher: 'Захаров З.З.',
-        group: '22М-1',
-        audience: '48',
+        icon: '',
       },
     ],
   },
