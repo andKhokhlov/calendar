@@ -3,19 +3,7 @@ import { CommonModule, NgFor } from '@angular/common';
 import { TuiCardLarge } from '@taiga-ui/layout';
 import { TuiAppearance } from '@taiga-ui/core';
 import { TuiAvatar, TuiBadge } from '@taiga-ui/kit';
-
-interface Subject {
-  name: string;
-  teacher: string;
-  icon: string;
-  group: string;
-  time: string;
-}
-
-interface ScheduleDay {
-  day: string;
-  subjects: Subject[];
-}
+import { Subject, ScheduleDay } from '../../models/subject.model';
 
 @Component({
   selector: 'app-calendar',

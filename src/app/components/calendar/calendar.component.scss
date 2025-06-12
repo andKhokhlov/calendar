@@ -65,3 +65,57 @@ tui-card-large span {
 tui-avatar {
   margin-left: 10px;
 }
+
+.schedule-table {
+  width: 100%;
+  table-layout: fixed;
+  border-radius: 10px;
+  overflow: hidden;
+  border-collapse: separate;
+  border-spacing: 0;
+}
+
+.card-container {
+  display: flex;
+  justify-content: center;
+}
+
+.subject-card {
+  width: 200px;
+  min-height: 80px;
+  display: flex;
+  align-items: center;
+}
+
+.card-header {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  padding: 8px;
+}
+
+.card-title {
+  margin: 0;
+  width: 100%;
+}
+
+.subject-name {
+  display: block;
+  font-size: 1em;
+  margin-bottom: 4px;
+}
+
+.teacher-name {
+  display: block;
+  font-size: 0.9em;
+  color: #666;
+}
+
+.empty-cell {
+  text-align: center;
+  color: gray;
+  height: 80px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}

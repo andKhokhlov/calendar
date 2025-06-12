@@ -1,14 +1,4 @@
-<table
-  tuiTable
-  style="
-    width: 100%;
-    table-layout: fixed;
-    border-radius: 10px;
-    overflow: hidden;
-    border-collapse: separate;
-    border-spacing: 0;
-  "
->
+<table tuiTable class="schedule-table">
   <thead>
     <tr>
       <th tuiTh style="width: 90px">Время</th>
@@ -39,27 +29,19 @@
         <ng-container
           *ngIf="getSubjectByDayAndTime(day, time) as subject; else emptyCell"
         >
-          <div style="display: flex; justify-content: center">
-            <div tuiAppearance="floating" tuiCardLarge>
-              <header tuiHeader style="display: flex; align-items: baseline">
-                <h1 tuiTitle>
-                  {{ subject.name }}
-                  <span tuiSubtitle>{{ subject.teacher }}</span>
+          <div class="card-container">
+            <div tuiAppearance="floating" tuiCardLarge class="subject-card">
+              <header tuiHeader class="card-header">
+                <h1 tuiTitle class="card-title">
+                  <span class="subject-name">{{ subject.subject }}</span>
+                  <span class="teacher-name">{{ subject.teacher }}</span>
                 </h1>
-                <aside tuiAccessories>
-                  <tui-avatar
-                    style="margin-left: 10px"
-                    appearance="primary"
-                    [src]="subject.icon"
-                    size="xs"
-                  ></tui-avatar>
-                </aside>
               </header>
             </div>
           </div>
         </ng-container>
         <ng-template #emptyCell>
-          <div style="text-align: center; color: gray">—</div>
+          <div class="empty-cell">—</div>
         </ng-template>
       </td>
     </tr>

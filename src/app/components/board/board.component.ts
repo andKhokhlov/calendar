@@ -11,8 +11,7 @@ import {
 } from '@taiga-ui/legacy';
 import { TuiTable } from '@taiga-ui/addon-table';
 import { CalendarComponent } from '../calendar/calendar.component';
-import { schedule } from '../../data/schedule';
-import { NgIf } from '@angular/common';
+import { NgForOf, NgIf } from '@angular/common';
 import {
   TuiBlockStatus,
   TuiCardLarge,
@@ -20,6 +19,9 @@ import {
   TuiHeader,
 } from '@taiga-ui/layout';
 import { TuiAppearance } from '@taiga-ui/core';
+import { ScheduleService } from '../../service/schedule.service';
+import { Subject, ScheduleDay } from '../../models/subject.model';
+
 @Component({
   selector: 'app-board',
   standalone: true,
@@ -35,6 +37,7 @@ import { TuiAppearance } from '@taiga-ui/core';
     TuiCardLarge,
     TuiAppearance,
     TuiBlockStatus,
+    NgForOf,
   ],
   templateUrl: './board.component.html',
   styleUrls: ['./board.component.scss'],
@@ -109,7 +112,25 @@ export class BoardComponent implements OnInit {
     { name: '24П-1', specialtyKey: 'specialty9' },
   ];
 
+  // Изменен тип schedule на ScheduleDay[]
+  schedule: ScheduleDay[] = [];
+
+  // Порядок дней недели для календаря
+  private readonly daysOrder = [
+    'Понедельник',
+    'Вторник',
+    'Среда',
+    'Четверг',
+    'Пятница',
+    'Суббота',
+    'Воскресенье',
+  ];
+
+  constructor(private scheduleService: ScheduleService) {}
+
   ngOnInit(): void {
+    this.load();
+
     this.control.valueChanges.subscribe((value) => {
       this.availableGroups = value
         ? this.groups.filter((group) => group.specialtyKey === value.key)
@@ -123,11 +144,45 @@ export class BoardComponent implements OnInit {
     });
   }
 
-  private filterScheduleByGroup(groupName: string) {
-    return schedule.map((day) => ({
+  load() {
+    this.scheduleService.getAll().subscribe((data: Subject[]) => {
+      // Преобразуем плоский массив в ScheduleDay[]
+      const groupedSchedule: { [key: string]: Subject[] } = {};
+      this.daysOrder.forEach((day) => (groupedSchedule[day] = [])); // Инициализируем все дни пустыми массивами
+
+      data.forEach((item: Subject) => {
+        // Указываем тип item как Subject
+        const dayName = item.day;
+        if (dayName && groupedSchedule[dayName]) {
+          groupedSchedule[dayName].push({
+            ...item,
+            icon: item.icon || 'assets/icons/default.svg',
+          });
+        }
+      });
+
+      // Преобразуем объект в массив ScheduleDay[] и сортируем по дням недели
+      this.schedule = this.daysOrder.map((day) => ({
+        day: day,
+        subjects: groupedSchedule[day],
+      }));
+
+      // Принудительно обновляем отфильтрованное расписание после загрузки
+      if (this.control2.value) {
+        this.filteredSchedule = this.filterScheduleByGroup(
+          this.control2.value.name
+        );
+      } else {
+        this.filteredSchedule = this.schedule;
+      }
+    });
+  }
+
+  private filterScheduleByGroup(groupName: string): ScheduleDay[] {
+    return this.schedule.map((day) => ({
       ...day,
       subjects:
-        day.subjects?.filter((subject) => subject?.group === groupName) ?? [],
+        day.subjects?.filter((subject) => subject.group === groupName) || [],
     }));
   }
 
@@ -135,5 +190,5 @@ export class BoardComponent implements OnInit {
   protected readonly stringify2 = (group: { name: string }): string =>
     group.name;
   protected availableGroups: { name: string }[] = [];
-  protected filteredSchedule = schedule;
+  protected filteredSchedule: ScheduleDay[] = []; // Изменен тип
 }

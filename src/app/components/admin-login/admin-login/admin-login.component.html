@@ -1,0 +1,17 @@
+<form class="tui-form" (ngSubmit)="login()">
+  <tui-input
+    [(ngModel)]="username"
+    name="username"
+    placeholder="Логин"
+    required
+  ></tui-input>
+  <tui-input
+    [(ngModel)]="password"
+    name="password"
+    type="password"
+    placeholder="Пароль"
+    required
+  ></tui-input>
+  <button tuiButton type="submit" appearance="primary">Войти</button>
+  <div *ngIf="error" class="tui-error">{{ error }}</div>
+</form>
