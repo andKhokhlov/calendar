@@ -4,11 +4,19 @@ import { TuiCardLarge } from '@taiga-ui/layout';
 import { TuiAppearance } from '@taiga-ui/core';
 import { TuiAvatar, TuiBadge } from '@taiga-ui/kit';
 import { Subject, ScheduleDay } from '../../models/subject.model';
+import { WeekIndicatorComponent } from '../week-indicator/week-indicator.component';
 
 @Component({
   selector: 'app-mobile-calendar',
   standalone: true,
-  imports: [CommonModule, TuiCardLarge, TuiAppearance, TuiBadge, TuiAvatar],
+  imports: [
+    CommonModule,
+    TuiCardLarge,
+    TuiAppearance,
+    TuiBadge,
+    TuiAvatar,
+    WeekIndicatorComponent,
+  ],
   templateUrl: './mobile-calendar.component.html',
   styleUrls: ['./mobile-calendar.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
