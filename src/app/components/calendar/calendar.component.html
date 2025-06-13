@@ -1,49 +1,58 @@
-<table tuiTable class="schedule-table">
-  <thead>
-    <tr>
-      <th tuiTh style="width: 90px">Время</th>
-      <th tuiTh>Понедельник</th>
-      <th tuiTh>Вторник</th>
-      <th tuiTh>Среда</th>
-      <th tuiTh>Четверг</th>
-      <th tuiTh>Пятница</th>
-      <th tuiTh>Суббота</th>
-    </tr>
-  </thead>
-  <tbody tuiTbody>
-    <tr *ngFor="let time of uniqueTimes">
-      <!-- Время -->
-      <td tuiTd>
-        <tui-badge
-          size="s"
-          appearance="positive"
-          tuiTitle
-          style="display: flex; justify-content: flex-end"
-        >
-          {{ time }}
-        </tui-badge>
-      </td>
+<!-- Десктопная версия -->
+<div class="desktop-version" *ngIf="!isMobile">
+  <table tuiTable class="schedule-table">
+    <thead>
+      <tr>
+        <th tuiTh style="width: 90px">Время</th>
+        <th tuiTh>Понедельник</th>
+        <th tuiTh>Вторник</th>
+        <th tuiTh>Среда</th>
+        <th tuiTh>Четверг</th>
+        <th tuiTh>Пятница</th>
+        <th tuiTh>Суббота</th>
+      </tr>
+    </thead>
+    <tbody tuiTbody>
+      <tr *ngFor="let time of uniqueTimes">
+        <!-- Время -->
+        <td tuiTd>
+          <tui-badge
+            size="s"
+            appearance="positive"
+            tuiTitle
+            style="display: flex; justify-content: flex-end"
+          >
+            {{ time }}
+          </tui-badge>
+        </td>
 
-      <!-- Уроки на каждый день -->
-      <td tuiTd *ngFor="let day of days">
-        <ng-container
-          *ngIf="getSubjectByDayAndTime(day, time) as subject; else emptyCell"
-        >
-          <div class="card-container">
-            <div tuiAppearance="floating" tuiCardLarge class="subject-card">
-              <header tuiHeader class="card-header">
-                <h1 tuiTitle class="card-title">
-                  <span class="subject-name">{{ subject.subject }}</span>
-                  <span class="teacher-name">{{ subject.teacher }}</span>
-                </h1>
-              </header>
+        <!-- Уроки на каждый день -->
+        <td tuiTd *ngFor="let day of days">
+          <ng-container
+            *ngIf="getSubjectByDayAndTime(day, time) as subject; else emptyCell"
+          >
+            <div class="card-container">
+              <div tuiAppearance="floating" tuiCardLarge class="subject-card">
+                <header tuiHeader class="card-header">
+                  <h1 tuiTitle class="card-title">
+                    <span class="subject-name">{{ subject.subject }}</span>
+                    <span class="teacher-name">{{ subject.teacher }}</span>
+                  </h1>
+                </header>
+              </div>
             </div>
-          </div>
-        </ng-container>
-        <ng-template #emptyCell>
-          <div class="empty-cell">—</div>
-        </ng-template>
-      </td>
-    </tr>
-  </tbody>
-</table>
+          </ng-container>
+          <ng-template #emptyCell>
+            <div class="empty-cell">—</div>
+          </ng-template>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- Мобильная версия -->
+<app-mobile-calendar
+  *ngIf="isMobile"
+  [schedule]="schedule"
+></app-mobile-calendar>

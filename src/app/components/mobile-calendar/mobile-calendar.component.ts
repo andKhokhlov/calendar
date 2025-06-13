@@ -1,54 +1,22 @@
-import {
-  ChangeDetectionStrategy,
-  Component,
-  Input,
-  OnInit,
-  HostListener,
-} from '@angular/core';
-import { CommonModule, NgFor } from '@angular/common';
+import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { TuiCardLarge } from '@taiga-ui/layout';
 import { TuiAppearance } from '@taiga-ui/core';
 import { TuiAvatar, TuiBadge } from '@taiga-ui/kit';
 import { Subject, ScheduleDay } from '../../models/subject.model';
-import { MobileCalendarComponent } from '../mobile-calendar/mobile-calendar.component';
 
 @Component({
-  selector: 'app-calendar',
+  selector: 'app-mobile-calendar',
   standalone: true,
-  imports: [
-    CommonModule,
-    TuiCardLarge,
-    NgFor,
-    TuiAppearance,
-    TuiBadge,
-    TuiAvatar,
-    MobileCalendarComponent,
-  ],
-  templateUrl: './calendar.component.html',
-  styleUrls: ['./calendar.component.scss'],
+  imports: [CommonModule, TuiCardLarge, TuiAppearance, TuiBadge, TuiAvatar],
+  templateUrl: './mobile-calendar.component.html',
+  styleUrls: ['./mobile-calendar.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class CalendarComponent implements OnInit {
+export class MobileCalendarComponent {
   @Input() schedule: ScheduleDay[] = [];
-  isMobile = false;
 
-  ngOnInit() {
-    this.checkScreenSize();
-  }
-
-  @HostListener('window:resize')
-  onResize() {
-    this.checkScreenSize();
-  }
-
-  private checkScreenSize() {
-    this.isMobile = window.innerWidth <= 768;
-  }
-
-  getSubjectsTime(row: ScheduleDay): string {
-    return row.subjects.map((subject) => subject.time).join(', ');
-  }
-
+  currentDayIndex = 0;
   days = ['Понедельник', 'Вторник', 'Среда', 'Четверг', 'Пятница', 'Суббота'];
 
   // Уникальные времена занятий с сортировкой
@@ -61,10 +29,31 @@ export class CalendarComponent implements OnInit {
     return Array.from(times).sort((a, b) => this.sortByTime(a, b));
   }
 
-  // Получаем предмет для конкретного дня и времени
-  getSubjectByDayAndTime(day: string, time: string) {
-    const scheduleDay = this.schedule.find((d) => d.day === day);
-    return scheduleDay?.subjects.find((s) => s.time === time) || null;
+  // Получаем предметы для текущего дня
+  getCurrentDaySubjects(): Subject[] {
+    const currentDay = this.schedule.find(
+      (d) => d.day === this.days[this.currentDayIndex]
+    );
+    return currentDay?.subjects || [];
+  }
+
+  // Получаем предмет для конкретного времени
+  getSubjectForTime(time: string): Subject | undefined {
+    return this.getCurrentDaySubjects().find((s) => s.time === time);
+  }
+
+  // Переключение на следующий день
+  nextDay() {
+    if (this.currentDayIndex < this.days.length - 1) {
+      this.currentDayIndex++;
+    }
+  }
+
+  // Переключение на предыдущий день
+  prevDay() {
+    if (this.currentDayIndex > 0) {
+      this.currentDayIndex--;
+    }
   }
 
   // Функция сортировки по времени
