@@ -1,27 +1,29 @@
 <div class="list_wrapper_duo">
   <div class="controls-wrapper">
     <div class="main-controls">
-      <label class="g">
-        <tui-combo-box [formControl]="control" [stringify]="stringify">
-          Специальность
-          <tui-data-list-wrapper
-            *tuiDataList
-            [items]="items | tuiFilterByInput"
-            [itemContent]="stringify | tuiStringifyContent"
-          />
-        </tui-combo-box>
-      </label>
+      <div class="selection-controls">
+        <label class="g">
+          <tui-combo-box [formControl]="control" [stringify]="stringify">
+            Специальность
+            <tui-data-list-wrapper
+              *tuiDataList
+              [items]="items | tuiFilterByInput"
+              [itemContent]="stringify | tuiStringifyContent"
+            />
+          </tui-combo-box>
+        </label>
 
-      <label>
-        <tui-combo-box [formControl]="control2" [stringify]="stringify2">
-          Группа
-          <tui-data-list-wrapper
-            *tuiDataList
-            [items]="availableGroups | tuiFilterByInput"
-            [itemContent]="stringify2 | tuiStringifyContent"
-          />
-        </tui-combo-box>
-      </label>
+        <label>
+          <tui-combo-box [formControl]="control2" [stringify]="stringify2">
+            Группа
+            <tui-data-list-wrapper
+              *tuiDataList
+              [items]="availableGroups | tuiFilterByInput"
+              [itemContent]="stringify2 | tuiStringifyContent"
+            />
+          </tui-combo-box>
+        </label>
+      </div>
 
       <button
         *ngIf="control2.value"
