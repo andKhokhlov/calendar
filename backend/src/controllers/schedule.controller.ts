@@ -35,3 +35,19 @@ export async function deleteSchedule(req: Request, res: Response) {
   if (result.rows.length === 0) return res.sendStatus(404);
   res.json(result.rows[0]);
 }
+
+export async function getTeachers(req: Request, res: Response) {
+  const result = await pool.query(
+    'SELECT DISTINCT teacher FROM schedule ORDER BY teacher'
+  );
+  res.json(result.rows.map((r) => r.teacher).filter(Boolean));
+}
+
+export async function getScheduleByTeacher(req: Request, res: Response) {
+  const { teacher } = req.params;
+  const result = await pool.query(
+    'SELECT * FROM schedule WHERE teacher = $1 ORDER BY day, time',
+    [teacher]
+  );
+  res.json(result.rows);
+}

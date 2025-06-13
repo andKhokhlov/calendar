@@ -1,0 +1,42 @@
+<div class="teacher-schedule-panel">
+  <h2>Расписание преподавателя</h2>
+  <div class="teacher-selector">
+    <tui-combo-box
+      [stringify]="stringify"
+      [(ngModel)]="selectedTeacher"
+      (ngModelChange)="onTeacherSelect($event)"
+      placeholder="Выберите преподавателя"
+    >
+      <tui-data-list-wrapper
+        *tuiDataList
+        [items]="teachers | tuiFilterByInput"
+        [itemContent]="stringify | tuiStringifyContent"
+      ></tui-data-list-wrapper>
+    </tui-combo-box>
+  </div>
+
+  <div *ngIf="selectedTeacher && !loading">
+    <table class="tui-table">
+      <thead>
+        <tr>
+          <th>День</th>
+          <th>Время</th>
+          <th>Группа</th>
+          <th>Предмет</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let item of schedule">
+          <td>{{ item.day }}</td>
+          <td>{{ item.time }}</td>
+          <td>{{ item.group }}</td>
+          <td>{{ item.subject }}</td>
+        </tr>
+      </tbody>
+    </table>
+    <div *ngIf="schedule.length === 0" class="empty-message">
+      Нет расписания для выбранного преподавателя.
+    </div>
+  </div>
+  <div *ngIf="loading" class="loading-message">Загрузка...</div>
+</div>
