@@ -28,16 +28,19 @@
       </div>
 
       <div class="lesson-content">
-        <ng-container *ngIf="getSubjectForTime(time); else emptyLesson">
-          <div tuiAppearance="floating" tuiCardLarge class="lesson-card">
+        <ng-container
+          *ngIf="getSubjectForTime(time) as subject; else emptyLesson"
+        >
+          <div
+            tuiAppearance="floating"
+            tuiCardLarge
+            class="lesson-card"
+            [ngClass]="getSubjectCardColor(subject.subject)"
+          >
             <header tuiHeader class="lesson-header">
               <h3 class="lesson-title">
-                <span class="subject-name">{{
-                  getSubjectForTime(time)?.subject
-                }}</span>
-                <span class="teacher-name">{{
-                  getSubjectForTime(time)?.teacher
-                }}</span>
+                <span class="subject-name">{{ subject.subject }}</span>
+                <span class="teacher-name">{{ subject.teacher }}</span>
               </h3>
             </header>
           </div>

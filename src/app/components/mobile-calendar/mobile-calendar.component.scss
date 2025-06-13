@@ -165,6 +165,43 @@
   border: 1px dashed #dee2e6;
 }
 
+/* Цветовые вариации для карточек предметов в мобильной версии */
+.lesson-card.subject-card--color-1 {
+  background-color: #ffffff;
+  border: 1px solid #e9ecef;
+  border-left: 4px solid #0050b3; /* Голубая полоса слева */
+  .subject-name {
+    color: #0050b3 !important; /* Темно-синий текст */
+  }
+  .teacher-name {
+    color: #40a9ff !important; /* Средне-синий текст */
+  }
+}
+
+.lesson-card.subject-card--color-2 {
+  background-color: #ffffff;
+  border: 1px solid #e9ecef;
+  border-left: 4px solid #237804; /* Зеленая полоса слева */
+  .subject-name {
+    color: #237804 !important; /* Темно-зеленый текст */
+  }
+  .teacher-name {
+    color: #52c41a !important; /* Средне-зеленый текст */
+  }
+}
+
+.lesson-card.subject-card--color-3 {
+  background-color: #ffffff;
+  border: 1px solid #e9ecef;
+  border-left: 4px solid #531dab; /* Фиолетовая полоса слева */
+  .subject-name {
+    color: #531dab !important; /* Темно-фиолетовый текст */
+  }
+  .teacher-name {
+    color: #722ed1 !important; /* Средне-фиолетовый текст */
+  }
+}
+
 // Анимации
 .lesson-item {
   animation: slideIn 0.3s ease-out;
