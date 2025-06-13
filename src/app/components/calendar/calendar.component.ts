@@ -80,4 +80,19 @@ export class CalendarComponent implements OnInit {
     const [hours, minutes] = time.split(':').map(Number);
     return hours * 60 + minutes;
   }
+
+  // Генерируем цвет для карточки предмета на основе его названия
+  getSubjectCardColor(subjectName: string): string {
+    const colors = [
+      'subject-card--color-1',
+      'subject-card--color-2',
+      'subject-card--color-3',
+    ];
+    let hash = 0;
+    for (let i = 0; i < subjectName.length; i++) {
+      hash = subjectName.charCodeAt(i) + ((hash << 5) - hash);
+    }
+    const colorIndex = Math.abs(hash) % colors.length;
+    return colors[colorIndex];
+  }
 }

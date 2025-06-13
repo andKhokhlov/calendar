@@ -32,7 +32,12 @@
             *ngIf="getSubjectByDayAndTime(day, time) as subject; else emptyCell"
           >
             <div class="card-container">
-              <div tuiAppearance="floating" tuiCardLarge class="subject-card">
+              <div
+                tuiAppearance="floating"
+                tuiCardLarge
+                class="subject-card"
+                [ngClass]="getSubjectCardColor(subject.subject)"
+              >
                 <header tuiHeader class="card-header">
                   <h1 tuiTitle class="card-title">
                     <span class="subject-name">{{ subject.subject }}</span>
