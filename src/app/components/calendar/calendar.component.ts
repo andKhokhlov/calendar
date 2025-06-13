@@ -11,6 +11,7 @@ import { TuiAppearance } from '@taiga-ui/core';
 import { TuiAvatar, TuiBadge } from '@taiga-ui/kit';
 import { Subject, ScheduleDay } from '../../models/subject.model';
 import { MobileCalendarComponent } from '../mobile-calendar/mobile-calendar.component';
+import { WeekIndicatorComponent } from '../week-indicator/week-indicator.component';
 
 @Component({
   selector: 'app-calendar',
@@ -23,6 +24,7 @@ import { MobileCalendarComponent } from '../mobile-calendar/mobile-calendar.comp
     TuiBadge,
     TuiAvatar,
     MobileCalendarComponent,
+    WeekIndicatorComponent,
   ],
   templateUrl: './calendar.component.html',
   styleUrls: ['./calendar.component.scss'],
