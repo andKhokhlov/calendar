@@ -1,25 +1,54 @@
 <div class="list_wrapper_duo">
-  <label class="g">
-    <tui-combo-box [formControl]="control" [stringify]="stringify">
-      Специальность
-      <tui-data-list-wrapper
-        *tuiDataList
-        [items]="items | tuiFilterByInput"
-        [itemContent]="stringify | tuiStringifyContent"
-      />
-    </tui-combo-box>
-  </label>
+  <div class="controls-wrapper">
+    <div class="main-controls">
+      <label class="g">
+        <tui-combo-box [formControl]="control" [stringify]="stringify">
+          Специальность
+          <tui-data-list-wrapper
+            *tuiDataList
+            [items]="items | tuiFilterByInput"
+            [itemContent]="stringify | tuiStringifyContent"
+          />
+        </tui-combo-box>
+      </label>
 
-  <label>
-    <tui-combo-box [formControl]="control2" [stringify]="stringify2">
-      Группа
-      <tui-data-list-wrapper
-        *tuiDataList
-        [items]="availableGroups | tuiFilterByInput"
-        [itemContent]="stringify2 | tuiStringifyContent"
-      />
-    </tui-combo-box>
-  </label>
+      <label>
+        <tui-combo-box [formControl]="control2" [stringify]="stringify2">
+          Группа
+          <tui-data-list-wrapper
+            *tuiDataList
+            [items]="availableGroups | tuiFilterByInput"
+            [itemContent]="stringify2 | tuiStringifyContent"
+          />
+        </tui-combo-box>
+      </label>
+
+      <button
+        *ngIf="control2.value"
+        tuiButton
+        appearance="secondary"
+        size="s"
+        (click)="togglePinGroup(control2.value.name)"
+        [class.pinned]="isGroupPinned(control2.value.name)"
+        class="pin-button"
+      >
+        {{ isGroupPinned(control2.value.name) ? "★" : "☆" }}
+      </button>
+    </div>
+
+    <div class="pinned-groups" *ngIf="pinnedGroups.length > 0">
+      <button
+        *ngFor="let group of pinnedGroups"
+        tuiButton
+        appearance="primary"
+        size="s"
+        (click)="navigateToPinnedGroup(group)"
+        class="pinned-group-btn"
+      >
+        {{ group }}
+      </button>
+    </div>
+  </div>
 </div>
 
 <div class="main_content">

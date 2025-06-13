@@ -18,9 +18,10 @@ import {
   TuiCell,
   TuiHeader,
 } from '@taiga-ui/layout';
-import { TuiAppearance } from '@taiga-ui/core';
+import { TuiAppearance, TuiButton } from '@taiga-ui/core';
 import { ScheduleService } from '../../service/schedule.service';
 import { Subject, ScheduleDay } from '../../models/subject.model';
+import { PinnedGroupsService } from '../../service/pinned-groups.service';
 
 @Component({
   selector: 'app-board',
@@ -38,6 +39,7 @@ import { Subject, ScheduleDay } from '../../models/subject.model';
     TuiAppearance,
     TuiBlockStatus,
     NgForOf,
+    TuiButton,
   ],
   templateUrl: './board.component.html',
   styleUrls: ['./board.component.scss'],
@@ -46,7 +48,7 @@ import { Subject, ScheduleDay } from '../../models/subject.model';
 export class BoardComponent implements OnInit {
   protected readonly control = new FormControl<{
     name: string;
-    key: string; // Добавим ключ для специальности
+    key: string;
   } | null>(null);
 
   protected readonly control2 = new FormControl<{
@@ -112,29 +114,36 @@ export class BoardComponent implements OnInit {
     { name: '24П-1', specialtyKey: 'specialty9' },
   ];
 
-  // Изменен тип schedule на ScheduleDay[]
   schedule: ScheduleDay[] = [];
+  protected availableGroups: { name: string }[] = [];
+  protected filteredSchedule: ScheduleDay[] = [];
+  protected pinnedGroups: string[] = [];
 
-  // Порядок дней недели для календаря
-  private readonly daysOrder = [
-    'Понедельник',
-    'Вторник',
-    'Среда',
-    'Четверг',
-    'Пятница',
-    'Суббота',
-    'Воскресенье',
-  ];
-
-  constructor(private scheduleService: ScheduleService) {}
+  constructor(
+    private scheduleService: ScheduleService,
+    private pinnedGroupsService: PinnedGroupsService
+  ) {}
 
   ngOnInit(): void {
     this.load();
+    this.loadPinnedGroups();
 
     this.control.valueChanges.subscribe((value) => {
+      this.control2.setValue(null);
+
       this.availableGroups = value
         ? this.groups.filter((group) => group.specialtyKey === value.key)
         : [];
+
+      // Проверяем, есть ли закрепленная группа для текущей специальности
+      if (value) {
+        const pinnedGroup = this.availableGroups.find((g) =>
+          this.pinnedGroups.includes(g.name)
+        );
+        if (pinnedGroup) {
+          this.control2.setValue(pinnedGroup);
+        }
+      }
     });
 
     this.control2.valueChanges.subscribe((group) => {
@@ -144,14 +153,38 @@ export class BoardComponent implements OnInit {
     });
   }
 
+  private loadPinnedGroups(): void {
+    this.pinnedGroupsService.getPinnedGroups().subscribe((groups) => {
+      this.pinnedGroups = groups;
+    });
+  }
+
+  navigateToPinnedGroup(groupName: string): void {
+    const pinnedGroup = this.groups.find((g) => g.name === groupName);
+    if (pinnedGroup) {
+      // Сначала выбираем специальность
+      const specialty = this.items.find(
+        (item) => item.key === pinnedGroup.specialtyKey
+      );
+      if (specialty) {
+        this.control.setValue(specialty);
+        // Затем выбираем группу
+        setTimeout(() => {
+          const group = this.availableGroups.find((g) => g.name === groupName);
+          if (group) {
+            this.control2.setValue(group);
+          }
+        }, 0);
+      }
+    }
+  }
+
   load() {
     this.scheduleService.getAll().subscribe((data: Subject[]) => {
-      // Преобразуем плоский массив в ScheduleDay[]
       const groupedSchedule: { [key: string]: Subject[] } = {};
-      this.daysOrder.forEach((day) => (groupedSchedule[day] = [])); // Инициализируем все дни пустыми массивами
+      this.daysOrder.forEach((day) => (groupedSchedule[day] = []));
 
       data.forEach((item: Subject) => {
-        // Указываем тип item как Subject
         const dayName = item.day;
         if (dayName && groupedSchedule[dayName]) {
           groupedSchedule[dayName].push({
@@ -161,13 +194,11 @@ export class BoardComponent implements OnInit {
         }
       });
 
-      // Преобразуем объект в массив ScheduleDay[] и сортируем по дням недели
       this.schedule = this.daysOrder.map((day) => ({
         day: day,
         subjects: groupedSchedule[day],
       }));
 
-      // Принудительно обновляем отфильтрованное расписание после загрузки
       if (this.control2.value) {
         this.filteredSchedule = this.filterScheduleByGroup(
           this.control2.value.name
@@ -186,9 +217,25 @@ export class BoardComponent implements OnInit {
     }));
   }
 
+  togglePinGroup(groupName: string): void {
+    this.pinnedGroupsService.togglePinGroup(groupName);
+    this.loadPinnedGroups();
+  }
+
+  isGroupPinned(groupName: string): boolean {
+    return this.pinnedGroups.includes(groupName);
+  }
+
   protected readonly stringify = (item: { name: string }): string => item.name;
   protected readonly stringify2 = (group: { name: string }): string =>
     group.name;
-  protected availableGroups: { name: string }[] = [];
-  protected filteredSchedule: ScheduleDay[] = []; // Изменен тип
+
+  protected readonly daysOrder = [
+    'Понедельник',
+    'Вторник',
+    'Среда',
+    'Четверг',
+    'Пятница',
+    'Суббота',
+  ];
 }

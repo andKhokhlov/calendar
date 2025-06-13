@@ -7,21 +7,58 @@
 
 .list_wrapper_duo {
   padding-bottom: 10px;
+  margin-bottom: 10px;
+}
+
+.controls-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.main-controls {
   display: flex;
   gap: 30px;
-  margin-bottom: 10px;
+  align-items: flex-start;
+}
+
+.pinned-groups {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
 }
 
 label {
   display: inline-block;
-  width: auto; /* Ширина зависит от содержимого */
-  min-width: 120px; /* Минимальная ширина для отступов */
-  max-width: 100%; /* Ширина не будет превышать родительский элемент */
+  width: auto;
+  min-width: 120px;
+  max-width: 100%;
+  position: relative;
 }
 
 tui-combo-box {
-  width: 100%; /* Занимает всю доступную ширину */
-  min-width: 150px; /* Минимальная ширина для удобства */
+  width: 100%;
+  min-width: 150px;
+}
+
+.pin-button {
+  margin-left: 8px;
+  padding: 0 8px;
+  min-width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  &.pinned {
+    color: #ffd700;
+  }
+}
+
+.pinned-group-btn {
+  min-width: auto;
+  white-space: nowrap;
+  padding: 0 12px;
 }
 
 .main_content {
