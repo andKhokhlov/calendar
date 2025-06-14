@@ -1,4 +1,4 @@
-<div class="teacher-schedule-panel">
+<div class="desktop-version">
   <h2>Расписание преподавателя</h2>
   <div class="teacher-selector">
     <tui-combo-box
@@ -15,28 +15,67 @@
     </tui-combo-box>
   </div>
 
-  <div *ngIf="selectedTeacher && !loading">
-    <table class="tui-table">
+  <!-- Десктопная версия -->
+  <div *ngIf="selectedTeacher && !loading && !isMobile">
+    <table tuiTable class="schedule-table">
       <thead>
         <tr>
-          <th>День</th>
-          <th>Время</th>
-          <th>Группа</th>
-          <th>Предмет</th>
+          <th tuiTh style="width: 90px">Время</th>
+          <th tuiTh *ngFor="let day of daysOfWeek">{{ day }}</th>
         </tr>
       </thead>
-      <tbody>
-        <tr *ngFor="let item of schedule">
-          <td>{{ item.day }}</td>
-          <td>{{ item.time }}</td>
-          <td>{{ item.group }}</td>
-          <td>{{ item.subject }}</td>
+      <tbody tuiTbody>
+        <tr *ngFor="let time of uniqueTimes">
+          <td tuiTd>
+            <tui-badge
+              size="s"
+              appearance="positive"
+              tuiTitle
+              style="display: flex; justify-content: flex-end"
+            >
+              {{ time }}
+            </tui-badge>
+          </td>
+          <td tuiTd *ngFor="let day of daysOfWeek">
+            <ng-container
+              *ngIf="
+                groupedSchedule[day] && groupedSchedule[day][time] as item;
+                else emptyCell
+              "
+            >
+              <div class="card-container">
+                <div
+                  tuiAppearance="floating"
+                  tuiCardLarge
+                  class="subject-card"
+                  [ngClass]="getSubjectCardColor(item.subject)"
+                >
+                  <header tuiHeader class="card-header">
+                    <h1 tuiTitle class="card-title">
+                      <span class="subject-name">{{ item.subject }}</span>
+                      <span class="teacher-name">{{ item.group }}</span>
+                    </h1>
+                  </header>
+                </div>
+              </div>
+            </ng-container>
+            <ng-template #emptyCell>
+              <div class="empty-cell">—</div>
+            </ng-template>
+          </td>
         </tr>
       </tbody>
     </table>
-    <div *ngIf="schedule.length === 0" class="empty-message">
+    <div *ngIf="uniqueTimes.length === 0" class="empty-message">
       Нет расписания для выбранного преподавателя.
     </div>
   </div>
+
+  <!-- Мобильная версия -->
+  <app-mobile-teacher-schedule
+    *ngIf="selectedTeacher && !loading && isMobile"
+    [schedule]="schedule"
+  ></app-mobile-teacher-schedule>
+
   <div *ngIf="loading" class="loading-message">Загрузка...</div>
 </div>

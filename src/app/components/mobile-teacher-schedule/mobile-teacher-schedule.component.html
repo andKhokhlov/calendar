@@ -1,0 +1,57 @@
+<div class="mobile-calendar">
+  <!-- Навигация по дням -->
+  <div class="day-navigation">
+    <button
+      class="nav-button"
+      (click)="prevDay()"
+      [disabled]="currentDayIndex === 0"
+    >
+      <span class="arrow">←</span>
+    </button>
+    <h2 class="current-day">{{ days[currentDayIndex] }}</h2>
+    <button
+      class="nav-button"
+      (click)="nextDay()"
+      [disabled]="currentDayIndex === days.length - 1"
+    >
+      <span class="arrow">→</span>
+    </button>
+  </div>
+
+  <!-- Список занятий -->
+  <div class="lessons-list">
+    <div *ngFor="let time of uniqueTimes" class="lesson-item">
+      <div class="time-badge">
+        <tui-badge size="s" appearance="positive">
+          {{ time }}
+        </tui-badge>
+      </div>
+
+      <div class="lesson-content">
+        <ng-container
+          *ngIf="
+            getSubjectForTime(days[currentDayIndex], time) as item;
+            else emptyLesson
+          "
+        >
+          <div
+            tuiAppearance="floating"
+            tuiCardLarge
+            class="lesson-card"
+            [ngClass]="getSubjectCardColor(item.subject)"
+          >
+            <header tuiHeader class="lesson-header">
+              <h3 class="lesson-title">
+                <span class="subject-name">{{ item.subject }}</span>
+                <span class="teacher-name">{{ item.group }}</span>
+              </h3>
+            </header>
+          </div>
+        </ng-container>
+        <ng-template #emptyLesson>
+          <div class="empty-lesson">—</div>
+        </ng-template>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,203 @@
+.mobile-calendar {
+  width: 100%;
+  height: 100%;
+  padding: 12px;
+  background-color: #f8f9fa;
+  display: flex;
+  flex-direction: column;
+}
+
+.day-navigation {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+  padding: 8px 12px;
+  background-color: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+
+  .nav-button {
+    width: 36px;
+    height: 36px;
+    border: none;
+    background-color: #f8f9fa;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: all 0.2s ease;
+
+    &:hover:not(:disabled) {
+      background-color: #e9ecef;
+      transform: scale(1.05);
+    }
+
+    &:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    .arrow {
+      font-size: 18px;
+      color: #495057;
+    }
+  }
+
+  .current-day {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #212529;
+    margin: 0;
+  }
+}
+
+.lessons-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  flex: 1;
+  overflow-y: auto;
+  padding-right: 4px;
+
+  &::-webkit-scrollbar {
+    width: 4px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 2px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: #dee2e6;
+    border-radius: 2px;
+  }
+}
+
+.lesson-item {
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+  padding: 8px;
+  background-color: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  transition: transform 0.2s ease;
+
+  &:active {
+    transform: scale(0.98);
+  }
+}
+
+.time-badge {
+  flex-shrink: 0;
+  padding-top: 4px;
+
+  tui-badge {
+    background-color: #e7f5ff;
+    color: #1971c2;
+    font-weight: 500;
+    padding: 4px 8px;
+    border-radius: 6px;
+    font-size: 0.9rem;
+  }
+}
+
+.lesson-content {
+  flex-grow: 1;
+}
+
+.lesson-card {
+  width: 100%;
+  background-color: #ffffff;
+  border-radius: 10px;
+  overflow: hidden;
+  border: 1px solid #e9ecef;
+}
+
+.lesson-header {
+  padding: 10px;
+}
+
+.lesson-title {
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.subject-name {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #212529;
+  line-height: 1.3;
+  letter-spacing: -0.01em;
+}
+
+.teacher-name {
+  font-size: 0.9rem;
+  color: #495057;
+  line-height: 1.3;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+
+  &::before {
+    content: "";
+    display: inline-block;
+    width: 3px;
+    height: 3px;
+    background-color: #adb5bd;
+    border-radius: 50%;
+  }
+}
+
+.empty-lesson {
+  padding: 10px;
+  text-align: center;
+  color: #adb5bd;
+  font-size: 0.9rem;
+  background-color: #f8f9fa;
+  border-radius: 10px;
+  border: 1px dashed #dee2e6;
+}
+
+/* Цветовые вариации для карточек предметов в мобильной версии */
+.lesson-card.subject-card--color-1 {
+  background-color: #ffffff;
+  border: 1px solid #e9ecef;
+  border-left: 4px solid #0050b3; /* Голубая полоса слева */
+  .subject-name {
+    color: #0050b3 !important; /* Темно-синий текст */
+  }
+  .teacher-name {
+    color: #40a9ff !important; /* Средне-синий текст */
+  }
+}
+
+.lesson-card.subject-card--color-2 {
+  background-color: #ffffff;
+  border: 1px solid #e9ecef;
+  border-left: 4px solid #237804; /* Зеленая полоса слева */
+  .subject-name {
+    color: #237804 !important; /* Темно-зеленый текст */
+  }
+  .teacher-name {
+    color: #52c41a !important; /* Средне-зеленый текст */
+  }
+}
+
+.lesson-card.subject-card--color-3 {
+  background-color: #ffffff;
+  border: 1px solid #e9ecef;
+  border-left: 4px solid #531dab; /* Фиолетовая полоса слева */
+  .subject-name {
+    color: #531dab !important; /* Темно-фиолетовый текст */
+  }
+  .teacher-name {
+    color: #9254de !important; /* Средне-фиолетовый текст */
+  }
+}

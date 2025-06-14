@@ -37,17 +37,47 @@ export async function deleteSchedule(req: Request, res: Response) {
 }
 
 export async function getTeachers(req: Request, res: Response) {
-  const result = await pool.query(
-    'SELECT DISTINCT teacher FROM schedule ORDER BY teacher'
-  );
-  res.json(result.rows.map((r) => r.teacher).filter(Boolean));
+  try {
+    const result = await pool.query('SELECT teacher FROM schedule');
+
+    // Process unique teachers in Node.js
+    const rawTeachers = result.rows.map((r) => r.teacher);
+
+    // Filter out null/empty, trim, convert to lowercase for comparison, then get unique
+    const uniqueLowercased = new Set<string>();
+    const cleanedTeachers: string[] = [];
+
+    for (const teacher of rawTeachers) {
+      if (teacher && typeof teacher === 'string') {
+        const trimmed = teacher.trim();
+        const trimmedLower = trimmed.toLowerCase();
+        if (trimmedLower !== '' && !uniqueLowercased.has(trimmedLower)) {
+          uniqueLowercased.add(trimmedLower);
+          // Store the original (trimmed) version for display, picking the first one encountered
+          cleanedTeachers.push(trimmed);
+        }
+      }
+    }
+
+    // Sort the cleaned unique teachers
+    cleanedTeachers.sort((a, b) => a.localeCompare(b, 'ru'));
+
+    res.json(cleanedTeachers);
+  } catch (error) {
+    console.error('Error fetching teachers:', error);
+    res.status(500).json({ message: 'Error fetching teachers' });
+  }
 }
 
 export async function getScheduleByTeacher(req: Request, res: Response) {
   const { teacher } = req.params;
+  const cleanedTeacherParam = teacher.trim().toLowerCase();
+
   const result = await pool.query(
-    'SELECT * FROM schedule WHERE teacher = $1 ORDER BY day, time',
-    [teacher]
+    `SELECT * FROM schedule 
+     WHERE LOWER(TRIM(REPLACE(teacher, E'\\t', ''))) = $1 
+     ORDER BY day, time`,
+    [cleanedTeacherParam]
   );
   res.json(result.rows);
 }
