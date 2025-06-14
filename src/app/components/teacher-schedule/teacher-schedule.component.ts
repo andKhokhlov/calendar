@@ -64,7 +64,6 @@ export class TeacherScheduleComponent implements OnInit {
   fetchTeachers() {
     this.http.get<string[]>('/api/schedule/teachers').subscribe(
       (data) => {
-        console.log('Полученные преподаватели:', data);
         this.teachers = data; // Теперь данные уже чистые с бэкенда
       },
       (error) => {
@@ -84,7 +83,6 @@ export class TeacherScheduleComponent implements OnInit {
       .get<any[]>(`/api/schedule/teacher/${encodeURIComponent(teacher)}`)
       .subscribe(
         (data) => {
-          console.log('Расписание для', teacher, ':', data);
           this.schedule = data;
           this.prepareTableData();
           this.loading = false;
