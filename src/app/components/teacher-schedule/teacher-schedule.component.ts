@@ -49,6 +49,30 @@ export class TeacherScheduleComponent implements OnInit {
   uniqueTimes: string[] = [];
   groupedSchedule: { [day: string]: { [time: string]: any } } = {};
 
+  // Фиксированные временные слоты для разных типов дней
+  mondayTimes = [
+    { name: '8:30-10:05' },
+    { name: '10:15-11:50' },
+    { name: '12:30-14:05' },
+    { name: '14:15-15:50' },
+    { name: '16:00-17:35' },
+  ];
+
+  saturdayTimes = [
+    { name: '8:30-10:05' },
+    { name: '10:15-11:50' },
+    { name: '12:30-14:05' },
+  ];
+
+  otherDayTimes = [
+    { name: '8:30-10:05' },
+    { name: '10:15-11:50' },
+    { name: '12:30-14:05' },
+    { name: '14:15-15:50' },
+    { name: '16:00-17:35' },
+    { name: '17:45-19:20' },
+  ];
+
   constructor(private http: HttpClient) {}
 
   @HostListener('window:resize')
@@ -95,20 +119,36 @@ export class TeacherScheduleComponent implements OnInit {
   }
 
   prepareTableData() {
-    // Собираем уникальные времена занятий
-    const times = new Set<string>();
     this.groupedSchedule = {};
+    let allUniqueTimesAcrossWeek: string[] = [];
+
     for (const day of this.daysOfWeek) {
       this.groupedSchedule[day] = {};
-    }
-    for (const item of this.schedule) {
-      times.add(item.time);
-      if (!this.groupedSchedule[item.day]) {
-        this.groupedSchedule[item.day] = {};
+      let timesForCurrentDay: { name: string }[] = [];
+
+      if (day === 'Понедельник') {
+        timesForCurrentDay = this.mondayTimes;
+      } else if (day === 'Суббота') {
+        timesForCurrentDay = this.saturdayTimes;
+      } else {
+        timesForCurrentDay = this.otherDayTimes;
       }
-      this.groupedSchedule[item.day][item.time] = item;
+
+      // Populate groupedSchedule with actual subjects for the day
+      for (const item of this.schedule.filter((s) => s.day === day)) {
+        this.groupedSchedule[day][item.time] = item;
+      }
+
+      // Collect all unique times for the master list (which will be table rows)
+      allUniqueTimesAcrossWeek = allUniqueTimesAcrossWeek.concat(
+        timesForCurrentDay.map((t) => t.name)
+      );
     }
-    this.uniqueTimes = Array.from(times).sort((a, b) => this.sortByTime(a, b));
+
+    // Filter unique and sort the master list for table rows
+    this.uniqueTimes = Array.from(new Set(allUniqueTimesAcrossWeek)).sort(
+      (a, b) => this.sortByTime(a, b)
+    );
   }
 
   sortByTime(a: string, b: string): number {

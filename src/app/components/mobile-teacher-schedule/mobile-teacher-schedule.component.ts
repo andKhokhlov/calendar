@@ -24,15 +24,48 @@ export class MobileTeacherScheduleComponent implements OnInit {
 
   currentDayIndex = 0;
 
+  // Фиксированные временные слоты для разных типов дней
+  mondayTimes = [
+    { name: '8:30-10:05' },
+    { name: '10:15-11:50' },
+    { name: '12:30-14:05' },
+    { name: '14:15-15:50' },
+    { name: '16:00-17:35' },
+  ];
+
+  saturdayTimes = [
+    { name: '8:30-10:05' },
+    { name: '10:15-11:50' },
+    { name: '12:30-14:05' },
+  ];
+
+  otherDayTimes = [
+    { name: '8:30-10:05' },
+    { name: '10:15-11:50' },
+    { name: '12:30-14:05' },
+    { name: '14:15-15:50' },
+    { name: '16:00-17:35' },
+    { name: '17:45-19:20' },
+  ];
+
   ngOnInit(): void {
-    // Ensure initial schedule processing happens if data is already available
     this.groupScheduleByDay();
   }
 
   get uniqueTimes(): string[] {
-    const times = new Set<string>();
-    this.schedule.forEach((item) => times.add(item.time));
-    return Array.from(times).sort((a, b) => this.sortByTime(a, b));
+    const currentDay = this.days[this.currentDayIndex];
+    let timesForCurrentDay: { name: string }[] = [];
+
+    if (currentDay === 'Понедельник') {
+      timesForCurrentDay = this.mondayTimes;
+    } else if (currentDay === 'Суббота') {
+      timesForCurrentDay = this.saturdayTimes;
+    } else {
+      timesForCurrentDay = this.otherDayTimes;
+    }
+    return timesForCurrentDay
+      .map((t) => t.name)
+      .sort((a, b) => this.sortByTime(a, b));
   }
 
   groupedScheduleByDay: { [day: string]: any[] } = {};
