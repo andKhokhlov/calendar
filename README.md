@@ -1,59 +1,126 @@
-# Calendar
+# Calendar Application
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 19.1.2.
+## Prerequisites
 
-## Development server
+- Docker Desktop (https://www.docker.com/products/docker-desktop)
+- Git (опционально, для клонирования репозитория)
 
-To start a local development server, run:
+## Quick Start
 
-```bash
-ng serve
+1. Установите Docker Desktop
+2. Запустите Docker Desktop и дождитесь его полной загрузки
+3. Запустите приложение:
+
+   - Двойной клик по файлу `start.bat`
+   - Или выполните в терминале: `docker-compose up --build`
+
+4. Откройте приложение в браузере:
+   - Frontend: http://localhost:4200
+   - Backend API: http://localhost:3001
+
+## Структура проекта
+
+```
+calendar/
+├── backend/           # Backend сервер (Node.js + Express)
+├── src/              # Frontend приложение (Angular)
+├── docker-compose.yml # Конфигурация Docker
+├── Dockerfile        # Конфигурация для Frontend
+└── backend/
+    └── Dockerfile    # Конфигурация для Backend
 ```
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+## Доступные команды
 
-## Code scaffolding
-
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+### Запуск приложения
 
 ```bash
-ng generate component component-name
+docker-compose up --build
 ```
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+### Остановка приложения
 
 ```bash
-ng generate --help
+docker-compose down
 ```
 
-## Building
-
-To build the project run:
+### Просмотр логов
 
 ```bash
-ng build
+docker-compose logs -f
 ```
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
+## База данных
 
-## Running unit tests
+- PostgreSQL запускается автоматически в Docker
+- Данные сохраняются между перезапусками
+- Порт: 5432
+- Пользователь: postgres
+- Пароль: root
+- База данных: calendar
 
-To execute unit tests with the [Karma](https://karma-runner.github.io) test runner, use the following command:
+## Troubleshooting
 
-```bash
-ng test
-```
+### Если приложение не запускается
 
-## Running end-to-end tests
+1. Убедитесь, что Docker Desktop запущен
+2. Проверьте, что порты 4200, 3001 и 5432 свободны
+3. Попробуйте перезапустить Docker Desktop
 
-For end-to-end (e2e) testing, run:
+### Если база данных не подключается
 
-```bash
-ng e2e
-```
+1. Проверьте логи контейнера postgres:
+   ```bash
+   docker-compose logs postgres
+   ```
+2. Убедитесь, что файл `backend/init.sql` существует
 
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
+### Если нужно сбросить базу данных
 
-## Additional Resources
+1. Остановите контейнеры:
+   ```bash
+   docker-compose down -v
+   ```
+2. Запустите заново:
+   ```bash
+   docker-compose up --build
+   ```
 
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+## Разработка
+
+### Для разработчиков
+
+Если вы хотите разрабатывать приложение локально (без Docker):
+
+1. Установите зависимости:
+
+   ```bash
+   # Backend
+   cd backend
+   npm install
+
+   # Frontend
+   npm install
+   ```
+
+2. Запустите PostgreSQL локально
+
+3. Запустите приложение:
+
+   ```bash
+   # Backend
+   cd backend
+   npm run dev
+
+   # Frontend
+   npm start
+   ```
+
+## Поддержка
+
+При возникновении проблем:
+
+1. Проверьте раздел Troubleshooting
+2. Убедитесь, что все порты свободны
+3. Проверьте логи контейнеров
+4. Перезапустите Docker Desktop
