@@ -50,6 +50,13 @@ tui-combo-box {
 }
 
 .pin-button {
+  background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 50%, #ec4899 100%);
+  color: #fff;
+  border: none;
+  font-weight: 600;
+  border-radius: 50%;
+  box-shadow: 0 2px 8px rgba(76, 29, 149, 0.1);
+  transition: background 0.3s, box-shadow 0.3s, transform 0.2s;
   padding: 0 8px;
   min-width: 32px;
   height: 32px;
@@ -60,6 +67,14 @@ tui-combo-box {
   &.pinned {
     color: #ffd700;
   }
+}
+
+.pin-button:hover,
+.pin-button.pinned {
+  background: linear-gradient(135deg, #7c3aed 0%, #4f46e5 50%, #ec4899 100%);
+  color: #fff;
+  box-shadow: 0 4px 16px rgba(76, 29, 149, 0.18);
+  transform: scale(1.08);
 }
 
 .pinned-group-btn {

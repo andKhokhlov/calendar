@@ -18,21 +18,31 @@
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
 
   .nav-button {
+    background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 50%, #ec4899 100%);
+    color: #fff;
+    border: none;
+    font-weight: 600;
+    border-radius: 50%;
+    box-shadow: 0 2px 8px rgba(76, 29, 149, 0.1);
+    transition: background 0.3s, box-shadow 0.3s, transform 0.2s;
     width: 36px;
     height: 36px;
-    border: none;
-    background-color: #f8f9fa;
-    border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
     cursor: pointer;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    transition: all 0.2s ease;
 
-    &:hover:not(:disabled) {
-      background-color: #e9ecef;
-      transform: scale(1.05);
+    &:hover:not(:disabled),
+    &:active {
+      background: linear-gradient(
+        135deg,
+        #7c3aed 0%,
+        #4f46e5 50%,
+        #ec4899 100%
+      );
+      color: #fff;
+      box-shadow: 0 4px 16px rgba(76, 29, 149, 0.18);
+      transform: scale(1.08);
     }
 
     &:disabled {
@@ -42,7 +52,9 @@
 
     .arrow {
       font-size: 18px;
-      color: #495057;
+      color: #fff;
+      text-shadow: 0 1px 4px rgba(44, 0, 80, 0.25);
+      font-weight: bold;
     }
   }
 
