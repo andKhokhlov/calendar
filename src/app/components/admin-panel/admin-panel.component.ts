@@ -14,6 +14,8 @@ import {
 } from '@taiga-ui/kit';
 import { TuiInputModule, TuiComboBoxModule } from '@taiga-ui/legacy';
 
+import { TuiDay } from '@taiga-ui/cdk';
+
 @Component({
   selector: 'app-admin-panel',
   templateUrl: './admin-panel.component.html',
@@ -107,6 +109,16 @@ export class AdminPanelComponent implements OnInit {
   stringify = (item: { name: string } | null | undefined): string =>
     item?.name || '';
 
+  uploadTypes: Array<'replacement' | 'session'> = ['replacement', 'session'];
+  uploadType: 'replacement' | 'session' | '' = '';
+  uploadDate: string = '';
+  uploadFile: File = new File([''], '');
+  uploadPreview: string | null = null;
+  uploading = false;
+  uploadStatus: string = '';
+
+  activeTab: 'schedule' | 'images' = 'schedule';
+
   constructor(
     private scheduleService: ScheduleService,
     private auth: AuthService,
@@ -193,5 +205,66 @@ export class AdminPanelComponent implements OnInit {
   logout() {
     this.auth.logout();
     this.router.navigate(['/admin-login']);
+  }
+
+  onFileSelected(event: Event) {
+    const input = event.target as HTMLInputElement;
+    if (input.files && input.files.length > 0) {
+      this.uploadFile = input.files[0];
+      const reader = new FileReader();
+      reader.onload = (e: any) => {
+        this.uploadPreview = e.target.result;
+      };
+      reader.readAsDataURL(this.uploadFile);
+    } else {
+      this.uploadFile = new File([''], '');
+      this.uploadPreview = null;
+    }
+  }
+
+  onFileSelectedTaiga(event: any) {
+    const files = event.target.files;
+    if (files && files.length > 0) {
+      this.uploadFile = files[0];
+      const reader = new FileReader();
+      reader.onload = (e: any) => {
+        this.uploadPreview = e.target.result;
+      };
+      reader.readAsDataURL(this.uploadFile);
+    } else {
+      this.uploadFile = new File([''], '');
+      this.uploadPreview = null;
+    }
+  }
+
+  onUploadImage() {
+    if (!this.uploadFile.name || !this.uploadDate || !this.uploadType) {
+      return;
+    }
+    this.uploading = true;
+    this.uploadStatus = '';
+    this.scheduleService
+      .uploadImage(
+        this.uploadType as 'replacement' | 'session',
+        this.uploadDate,
+        this.uploadFile
+      )
+      .subscribe({
+        next: () => {
+          this.uploadStatus = 'Картинка успешно загружена!';
+          this.uploading = false;
+          this.uploadFile = new File([''], '');
+          this.uploadPreview = null;
+        },
+        error: (err) => {
+          this.uploadStatus =
+            'Ошибка загрузки: ' + (err.error?.message || err.statusText);
+          this.uploading = false;
+        },
+      });
+  }
+
+  setTab(tab: 'schedule' | 'images') {
+    this.activeTab = tab;
   }
 }

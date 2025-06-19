@@ -1,0 +1,25 @@
+<div class="mobile-replacements-wrapper">
+  <ng-container *ngIf="loading">Загрузка...</ng-container>
+  <ng-container *ngIf="!loading && imageUrl">
+    <img
+      [src]="imageUrl"
+      alt="Замены"
+      class="mobile-replacements-img"
+      (click)="openModal()"
+    />
+  </ng-container>
+  <ng-container *ngIf="!loading && notFound">
+    <div class="not-found">Картинка не найдена</div>
+  </ng-container>
+</div>
+
+<!-- Фиксированная кнопка внизу -->
+<button class="back-btn-fixed" (click)="goBack()">← Назад</button>
+
+<!-- Модальное окно для увеличения -->
+<div class="modal-overlay" *ngIf="isModalOpen" (click)="closeModal()">
+  <div class="modal-content" (click)="$event.stopPropagation()">
+    <button class="modal-close" (click)="closeModal()">×</button>
+    <img [src]="imageUrl" alt="Замены" class="modal-img" />
+  </div>
+</div>

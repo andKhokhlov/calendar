@@ -163,4 +163,18 @@ export class ScheduleService {
       this.scheduleSubject.next(schedule);
     }
   }
+
+  uploadImage(type: 'replacement' | 'session', date: string, file: File) {
+    const formData = new FormData();
+    formData.append('type', type);
+    formData.append('date', date);
+    formData.append('file', file);
+    return this.http.post('/api/schedule/image', formData, this.getHeaders());
+  }
+
+  getImage(type: 'replacement' | 'session', date: string) {
+    return this.http.get(`/api/schedule/image?type=${type}&date=${date}`, {
+      responseType: 'blob',
+    });
+  }
 }

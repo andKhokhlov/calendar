@@ -113,9 +113,9 @@ tui-badge {
   align-items: center;
   background-color: #ffffff;
   border-radius: 8px;
-  border: 1px solid #e9ecef;
+  border: 3px solid #219a1a;
   transition: all 0.2s ease;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+  box-shadow: 0 2px 8px rgba(33, 154, 26, 0.1);
 
   &:hover {
     transform: translateY(-1px);

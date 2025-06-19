@@ -94,3 +94,62 @@ button[tuiButton] {
     min-width: 0;
   }
 }
+
+.admin-tabs {
+  display: flex;
+  gap: 18px;
+  margin: 32px 0 24px 0;
+}
+.admin-tab {
+  background: #f3f4f6;
+  color: #4f46e5;
+  border: none;
+  border-radius: 16px 16px 0 0;
+  font-size: 1.1rem;
+  font-weight: 600;
+  padding: 14px 32px;
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(76, 29, 149, 0.07);
+  transition: background 0.2s, color 0.2s, box-shadow 0.2s;
+  outline: none;
+}
+.admin-tab.active {
+  background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 50%, #ec4899 100%);
+  color: #fff;
+  box-shadow: 0 4px 16px rgba(76, 29, 149, 0.13);
+  z-index: 2;
+}
+.admin-tab:not(.active):hover {
+  background: #e0e7ff;
+  color: #7c3aed;
+}
+
+.group-selector,
+.admin-upload-section {
+  background: #f9fafb;
+  border-radius: 18px;
+  box-shadow: 0 2px 12px rgba(76, 29, 149, 0.06);
+  padding: 32px 24px 24px 24px;
+  margin-bottom: 32px;
+}
+.admin-upload-section {
+  max-width: 600px;
+  margin: 0 auto 32px auto;
+}
+.admin-upload-section form {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+.admin-upload-section label {
+  font-weight: 500;
+  color: #4f46e5;
+  margin-bottom: 4px;
+}
+.admin-upload-section input[type="file"] {
+  margin-top: 4px;
+}
+.upload-preview {
+  margin-top: 18px;
+  text-align: center;
+}

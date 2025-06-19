@@ -1,0 +1,17 @@
+<div *ngIf="isMobile">
+  <app-mobile-replacements></app-mobile-replacements>
+</div>
+<div *ngIf="!isMobile">
+  <div class="replacements-back-wrapper">
+    <button class="back-btn" (click)="goBack()">← Назад</button>
+  </div>
+  <div class="replacements-wrapper">
+    <ng-container *ngIf="loading">Загрузка...</ng-container>
+    <ng-container *ngIf="!loading && imageUrl">
+      <img [src]="imageUrl" alt="Замены" class="replacements-img" />
+    </ng-container>
+    <ng-container *ngIf="!loading && notFound">
+      <div class="not-found">Картинка не найдена</div>
+    </ng-container>
+  </div>
+</div>

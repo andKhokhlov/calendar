@@ -27,4 +27,18 @@ export const routes: Routes = [
     component: AdminPanelComponent,
     canActivate: [AdminGuard],
   },
+  {
+    path: 'replacements',
+    loadComponent: () =>
+      import('./components/replacements/replacements.component').then(
+        (m) => m.ReplacementsComponent
+      ),
+  },
+  {
+    path: 'session',
+    loadComponent: () =>
+      import('./components/session/session.component').then(
+        (m) => m.SessionComponent
+      ),
+  },
 ];

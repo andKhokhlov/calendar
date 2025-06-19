@@ -1,0 +1,12 @@
+<div class="session-back-wrapper">
+  <button class="back-btn" (click)="goBack()">← Назад</button>
+</div>
+<div class="session-wrapper">
+  <ng-container *ngIf="loading">Загрузка...</ng-container>
+  <ng-container *ngIf="!loading && imageUrl">
+    <img [src]="imageUrl" alt="Сессия" class="session-img" />
+  </ng-container>
+  <ng-container *ngIf="!loading && notFound">
+    <div class="not-found">Картинка не найдена</div>
+  </ng-container>
+</div>

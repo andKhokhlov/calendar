@@ -11,14 +11,14 @@
   .logo-container {
     display: flex;
     align-items: center;
-    gap: 28px;
+    gap: 40px;
     margin-bottom: 28px;
 
     .logo {
-      width: 80px;
-      height: 80px;
-      min-width: 80px;
-      min-height: 80px;
+      width: 120px;
+      height: 120px;
+      min-width: 120px;
+      min-height: 120px;
       object-fit: contain;
       filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.1));
       transition: transform 0.3s, filter 0.3s;
@@ -108,50 +108,42 @@
 
 // Responsive styles
 @media (max-width: 900px) {
-  .sidebar_container {
-    .logo-container {
-      gap: 18px;
-      margin-bottom: 18px;
-      .logo {
-        width: 60px;
-        height: 60px;
-        min-width: 60px;
-        min-height: 60px;
-      }
-      .title-container {
-        h1 {
-          font-size: 28px;
-        }
-        .sidebar_container_description {
-          font-size: 15px;
-        }
-      }
+  .logo-container {
+    gap: 24px;
+    .logo {
+      width: 80px;
+      height: 80px;
+      min-width: 80px;
+      min-height: 80px;
+    }
+    .title-container h1 {
+      font-size: 28px;
+    }
+    .title-container .sidebar_container_description {
+      font-size: 15px;
     }
   }
 }
 @media (max-width: 600px) {
-  .sidebar_container {
-    padding: 16px 4px;
-    .logo-container {
-      flex-direction: column;
+  .logo-container {
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 10px;
+    .logo {
+      width: 60px;
+      height: 60px;
+      min-width: 60px;
+      min-height: 60px;
+    }
+    .title-container {
       align-items: center;
-      gap: 8px;
-      margin-bottom: 10px;
-      .logo {
-        width: 48px;
-        height: 48px;
-        min-width: 48px;
-        min-height: 48px;
+      text-align: center;
+      h1 {
+        font-size: 20px;
       }
-      .title-container {
-        align-items: center;
-        text-align: center;
-        h1 {
-          font-size: 20px;
-        }
-        .sidebar_container_description {
-          font-size: 12px;
-        }
+      .sidebar_container_description {
+        font-size: 12px;
       }
     }
   }

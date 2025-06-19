@@ -2,61 +2,153 @@
   <button tuiButton appearance="secondary" (click)="logout()">Выйти</button>
   <h2>Расписание - Админ-Панель</h2>
 
-  <div class="group-selector">
-    <h3>Выберите группу:</h3>
-    <tui-combo-box
-      [stringify]="stringify"
-      [(ngModel)]="selectedGroup"
-      (ngModelChange)="onGroupSelect($event)"
-      placeholder="Выберите группу"
+  <div class="admin-tabs">
+    <button
+      class="admin-tab"
+      [class.active]="activeTab === 'schedule'"
+      (click)="setTab('schedule')"
     >
-      <tui-data-list-wrapper
-        *tuiDataList
-        [items]="groups | tuiFilterByInput"
-        [itemContent]="stringify | tuiStringifyContent"
-      ></tui-data-list-wrapper>
-    </tui-combo-box>
+      Редактирование расписания
+    </button>
+    <button
+      class="admin-tab"
+      [class.active]="activeTab === 'images'"
+      (click)="setTab('images')"
+    >
+      Загрузка фотографий
+    </button>
   </div>
 
-  <div *ngIf="selectedGroup">
-    <table class="tui-table">
-      <thead>
-        <tr>
-          <th>Предмет</th>
-          <th>Время</th>
-          <th>Группа</th>
-          <th>Преподаватель</th>
-          <th>День недели</th>
-          <th>Действия</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let item of filteredSchedule">
-          <td *ngIf="editing?.id !== item.id">{{ item.subject }}</td>
-          <td *ngIf="editing?.id !== item.id">{{ item.time }}</td>
-          <td *ngIf="editing?.id !== item.id">{{ item.group }}</td>
-          <td *ngIf="editing?.id !== item.id">{{ item.teacher }}</td>
-          <td *ngIf="editing?.id !== item.id">{{ item.day }}</td>
-          <td *ngIf="editing?.id !== item.id">
-            <button tuiButton size="s" (click)="edit(item)">
-              Редактировать
-            </button>
-            <button
-              style="margin-left: 10px"
-              tuiButton
-              size="s"
-              appearance="error"
-              (click)="delete(item.id)"
-            >
-              Удалить
-            </button>
-          </td>
-          <ng-container *ngIf="editing?.id === item.id">
+  <div *ngIf="activeTab === 'schedule'">
+    <div class="group-selector">
+      <h3>Выберите группу:</h3>
+      <tui-combo-box
+        [stringify]="stringify"
+        [(ngModel)]="selectedGroup"
+        (ngModelChange)="onGroupSelect($event)"
+        placeholder="Выберите группу"
+      >
+        <tui-data-list-wrapper
+          *tuiDataList
+          [items]="groups | tuiFilterByInput"
+          [itemContent]="stringify | tuiStringifyContent"
+        ></tui-data-list-wrapper>
+      </tui-combo-box>
+    </div>
+
+    <div *ngIf="selectedGroup">
+      <table class="tui-table">
+        <thead>
+          <tr>
+            <th>Предмет</th>
+            <th>Время</th>
+            <th>Группа</th>
+            <th>Преподаватель</th>
+            <th>День недели</th>
+            <th>Действия</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let item of filteredSchedule">
+            <td *ngIf="editing?.id !== item.id">{{ item.subject }}</td>
+            <td *ngIf="editing?.id !== item.id">{{ item.time }}</td>
+            <td *ngIf="editing?.id !== item.id">{{ item.group }}</td>
+            <td *ngIf="editing?.id !== item.id">{{ item.teacher }}</td>
+            <td *ngIf="editing?.id !== item.id">{{ item.day }}</td>
+            <td *ngIf="editing?.id !== item.id">
+              <button tuiButton size="s" (click)="edit(item)">
+                Редактировать
+              </button>
+              <button
+                style="margin-left: 10px"
+                tuiButton
+                size="s"
+                appearance="error"
+                (click)="delete(item.id)"
+              >
+                Удалить
+              </button>
+            </td>
+            <ng-container *ngIf="editing?.id === item.id">
+              <td>
+                <tui-input [(ngModel)]="editing.subject">Предмет</tui-input>
+              </td>
+              <td>
+                <tui-combo-box
+                  [stringify]="stringify"
+                  [(ngModel)]="editing.time"
+                >
+                  <tui-data-list-wrapper
+                    *tuiDataList
+                    [items]="timeOfvs | tuiFilterByInput"
+                    [itemContent]="stringify | tuiStringifyContent"
+                  ></tui-data-list-wrapper>
+                </tui-combo-box>
+              </td>
+              <td>
+                <tui-combo-box
+                  [stringify]="stringify"
+                  [(ngModel)]="editing.group"
+                >
+                  Группа
+                  <tui-data-list-wrapper
+                    *tuiDataList
+                    [items]="groups | tuiFilterByInput"
+                    [itemContent]="stringify | tuiStringifyContent"
+                  ></tui-data-list-wrapper>
+                </tui-combo-box>
+              </td>
+              <td>
+                <tui-input [(ngModel)]="editing.teacher"
+                  >Преподаватель</tui-input
+                >
+              </td>
+              <td>
+                <tui-combo-box
+                  [stringify]="stringify"
+                  [(ngModel)]="editing.day"
+                >
+                  <tui-data-list-wrapper
+                    *tuiDataList
+                    [items]="daysOfWeek | tuiFilterByInput"
+                    [itemContent]="stringify | tuiStringifyContent"
+                  ></tui-data-list-wrapper>
+                </tui-combo-box>
+              </td>
+              <td>
+                <button
+                  tuiButton
+                  size="s"
+                  appearance="primary"
+                  (click)="saveEdit()"
+                >
+                  Сохранить
+                </button>
+                <button
+                  tuiButton
+                  size="s"
+                  appearance="secondary"
+                  (click)="cancelEdit()"
+                >
+                  Отмена
+                </button>
+              </td>
+            </ng-container>
+          </tr>
+          <tr>
             <td>
-              <tui-input [(ngModel)]="editing.subject">Предмет</tui-input>
+              <tui-input
+                [(ngModel)]="newItem.subject"
+                placeholder="Новый предмет"
+                >Предмет</tui-input
+              >
             </td>
             <td>
-              <tui-combo-box [stringify]="stringify" [(ngModel)]="editing.time">
+              <tui-combo-box
+                [stringify]="stringify"
+                [(ngModel)]="newItem.time"
+                placeholder="Время"
+              >
                 <tui-data-list-wrapper
                   *tuiDataList
                   [items]="timeOfvs | tuiFilterByInput"
@@ -67,9 +159,9 @@
             <td>
               <tui-combo-box
                 [stringify]="stringify"
-                [(ngModel)]="editing.group"
+                [(ngModel)]="newItem.group"
+                placeholder="Группа"
               >
-                Группа
                 <tui-data-list-wrapper
                   *tuiDataList
                   [items]="groups | tuiFilterByInput"
@@ -78,10 +170,18 @@
               </tui-combo-box>
             </td>
             <td>
-              <tui-input [(ngModel)]="editing.teacher">Преподаватель</tui-input>
+              <tui-input
+                [(ngModel)]="newItem.teacher"
+                placeholder="Преподаватель"
+                >Преподаватель</tui-input
+              >
             </td>
             <td>
-              <tui-combo-box [stringify]="stringify" [(ngModel)]="editing.day">
+              <tui-combo-box
+                [stringify]="stringify"
+                [(ngModel)]="newItem.day"
+                placeholder="День недели"
+              >
                 <tui-data-list-wrapper
                   *tuiDataList
                   [items]="daysOfWeek | tuiFilterByInput"
@@ -90,82 +190,73 @@
               </tui-combo-box>
             </td>
             <td>
-              <button
-                tuiButton
-                size="s"
-                appearance="primary"
-                (click)="saveEdit()"
-              >
-                Сохранить
-              </button>
-              <button
-                tuiButton
-                size="s"
-                appearance="secondary"
-                (click)="cancelEdit()"
-              >
-                Отмена
+              <button tuiButton size="s" appearance="primary" (click)="add()">
+                Добавить
               </button>
             </td>
-          </ng-container>
-        </tr>
-        <tr>
-          <td>
-            <tui-input [(ngModel)]="newItem.subject" placeholder="Новый предмет"
-              >Предмет</tui-input
-            >
-          </td>
-          <td>
-            <tui-combo-box
-              [stringify]="stringify"
-              [(ngModel)]="newItem.time"
-              placeholder="Время"
-            >
-              <tui-data-list-wrapper
-                *tuiDataList
-                [items]="timeOfvs | tuiFilterByInput"
-                [itemContent]="stringify | tuiStringifyContent"
-              ></tui-data-list-wrapper>
-            </tui-combo-box>
-          </td>
-          <td>
-            <tui-combo-box
-              [stringify]="stringify"
-              [(ngModel)]="newItem.group"
-              placeholder="Группа"
-            >
-              <tui-data-list-wrapper
-                *tuiDataList
-                [items]="groups | tuiFilterByInput"
-                [itemContent]="stringify | tuiStringifyContent"
-              ></tui-data-list-wrapper>
-            </tui-combo-box>
-          </td>
-          <td>
-            <tui-input [(ngModel)]="newItem.teacher" placeholder="Преподаватель"
-              >Преподаватель</tui-input
-            >
-          </td>
-          <td>
-            <tui-combo-box
-              [stringify]="stringify"
-              [(ngModel)]="newItem.day"
-              placeholder="День недели"
-            >
-              <tui-data-list-wrapper
-                *tuiDataList
-                [items]="daysOfWeek | tuiFilterByInput"
-                [itemContent]="stringify | tuiStringifyContent"
-              ></tui-data-list-wrapper>
-            </tui-combo-box>
-          </td>
-          <td>
-            <button tuiButton size="s" appearance="primary" (click)="add()">
-              Добавить
-            </button>
-          </td>
-        </tr>
-      </tbody>
-    </table>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div *ngIf="activeTab === 'images'">
+    <div class="admin-upload-section">
+      <h3>Загрузка картинки для замены или сессии</h3>
+      <form (ngSubmit)="onUploadImage()" #uploadForm="ngForm">
+        <label>
+          Тип:
+          <tui-combo-box
+            [(ngModel)]="uploadType"
+            name="uploadType"
+            required
+            placeholder="Выберите тип"
+          >
+            <tui-data-list-wrapper
+              *tuiDataList
+              [items]="uploadTypes"
+            ></tui-data-list-wrapper>
+          </tui-combo-box>
+        </label>
+        <label>
+          Дата:
+          <input
+            type="date"
+            [(ngModel)]="uploadDate"
+            name="uploadDate"
+            required
+            placeholder="ДД.ММ.ГГГГ"
+          />
+        </label>
+        <label>
+          Файл:
+          <input
+            type="file"
+            (change)="onFileSelectedTaiga($event)"
+            accept=".jpg,.jpeg,.png"
+            required
+          />
+        </label>
+        <button
+          tuiButton
+          appearance="primary"
+          type="submit"
+          [disabled]="!uploadFile || !uploadDate || !uploadType || uploading"
+          class="upload-btn"
+        >
+          Загрузить
+        </button>
+        <span *ngIf="uploading">Загрузка...</span>
+        <span *ngIf="uploadStatus">{{ uploadStatus }}</span>
+      </form>
+      <div *ngIf="uploadPreview" class="upload-preview">
+        <h4>Превью:</h4>
+        <img
+          [src]="uploadPreview"
+          alt="preview"
+          style="max-width: 200px; max-height: 200px; border-radius: 8px"
+        />
+      </div>
+    </div>
   </div>
 </div>

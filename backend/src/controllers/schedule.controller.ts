@@ -81,3 +81,39 @@ export async function getScheduleByTeacher(req: Request, res: Response) {
   );
   res.json(result.rows);
 }
+
+// Загрузка картинки (замены/сессия)
+export async function uploadImage(req: Request, res: Response) {
+  try {
+    const { type, date } = req.body;
+    const file = req.file;
+    if (!file || !type || !date) {
+      return res.status(400).json({ message: 'Необходимы файл, type и date' });
+    }
+    await pool.query(
+      'INSERT INTO images (type, date, data, mimetype) VALUES ($1, $2, $3, $4) ON CONFLICT (type, date) DO UPDATE SET data = EXCLUDED.data, mimetype = EXCLUDED.mimetype, uploaded_at = CURRENT_TIMESTAMP',
+      [type, date, file.buffer, file.mimetype]
+    );
+    res.json({ message: 'Картинка загружена' });
+  } catch (e) {
+    res.status(500).json({ message: 'Ошибка загрузки', error: e });
+  }
+}
+
+// Получение картинки по дате и типу
+export async function getImage(req: Request, res: Response) {
+  try {
+    const { type, date } = req.query;
+    const result = await pool.query(
+      'SELECT data, mimetype FROM images WHERE type = $1 AND date = $2',
+      [type, date]
+    );
+    if (result.rows.length === 0) {
+      return res.status(404).json({ message: 'Картинка не найдена' });
+    }
+    res.set('Content-Type', result.rows[0].mimetype);
+    res.send(result.rows[0].data);
+  } catch (e) {
+    res.status(500).json({ message: 'Ошибка получения', error: e });
+  }
+}
