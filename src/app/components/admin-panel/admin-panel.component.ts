@@ -126,6 +126,7 @@ export class AdminPanelComponent implements OnInit {
   uploadPreview: string | null = null;
   uploading = false;
   uploadStatus: string = '';
+  isDragOver = false;
 
   activeTab: 'schedule' | 'images' = 'schedule';
 
@@ -235,16 +236,38 @@ export class AdminPanelComponent implements OnInit {
   onFileSelectedTaiga(event: any) {
     const files = event.target.files;
     if (files && files.length > 0) {
-      this.uploadFile = files[0];
-      const reader = new FileReader();
-      reader.onload = (e: any) => {
-        this.uploadPreview = e.target.result;
-      };
-      reader.readAsDataURL(this.uploadFile);
+      const file = files[0];
+      if (this.validateFile(file)) {
+        this.uploadFile = file;
+        const reader = new FileReader();
+        reader.onload = (e: any) => {
+          this.uploadPreview = e.target.result;
+        };
+        reader.readAsDataURL(this.uploadFile);
+        this.uploadStatus = '';
+      }
     } else {
       this.uploadFile = new File([''], '');
       this.uploadPreview = null;
     }
+  }
+
+  private validateFile(file: File): boolean {
+    // Проверяем тип файла
+    if (!file.type.startsWith('image/')) {
+      this.uploadStatus =
+        'Пожалуйста, выберите изображение (.jpg, .jpeg, .png)';
+      return false;
+    }
+
+    // Проверяем размер файла (5MB)
+    const maxSize = 5 * 1024 * 1024; // 5MB
+    if (file.size > maxSize) {
+      this.uploadStatus = 'Размер файла не должен превышать 5MB';
+      return false;
+    }
+
+    return true;
   }
 
   onUploadImage() {
@@ -286,5 +309,45 @@ export class AdminPanelComponent implements OnInit {
 
   setTab(tab: 'schedule' | 'images') {
     this.activeTab = tab;
+  }
+
+  formatFileSize(bytes: number): string {
+    if (bytes === 0) return '0 Bytes';
+    const k = 1024;
+    const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+    const i = Math.floor(Math.log(bytes) / Math.log(k));
+    return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+  }
+
+  onDragOver(event: DragEvent) {
+    event.preventDefault();
+    event.stopPropagation();
+    this.isDragOver = true;
+  }
+
+  onDragLeave(event: DragEvent) {
+    event.preventDefault();
+    event.stopPropagation();
+    this.isDragOver = false;
+  }
+
+  onDrop(event: DragEvent) {
+    event.preventDefault();
+    event.stopPropagation();
+    this.isDragOver = false;
+
+    const files = event.dataTransfer?.files;
+    if (files && files.length > 0) {
+      const file = files[0];
+      if (this.validateFile(file)) {
+        this.uploadFile = file;
+        const reader = new FileReader();
+        reader.onload = (e: any) => {
+          this.uploadPreview = e.target.result;
+        };
+        reader.readAsDataURL(this.uploadFile);
+        this.uploadStatus = '';
+      }
+    }
   }
 }

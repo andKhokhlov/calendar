@@ -230,12 +230,77 @@
         </label>
         <label>
           Файл:
-          <input
-            type="file"
-            (change)="onFileSelectedTaiga($event)"
-            accept=".jpg,.jpeg,.png"
-            required
-          />
+          <div class="tui-input-file-wrapper">
+            <input
+              type="file"
+              (change)="onFileSelectedTaiga($event)"
+              accept=".jpg,.jpeg,.png"
+              required
+              class="tui-input-file"
+              [disabled]="uploading"
+            />
+            <div
+              class="tui-input-file-label"
+              (dragover)="onDragOver($event)"
+              (dragleave)="onDragLeave($event)"
+              (drop)="onDrop($event)"
+              [class.drag-over]="isDragOver"
+            >
+              <svg
+                class="tui-input-file-icon"
+                width="16"
+                height="16"
+                viewBox="0 0 24 24"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M14 2H6C4.9 2 4 2.9 4 4V20C4 21.1 4.89 22 5.99 22H18C19.1 22 20 21.1 20 20V8L14 2Z"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+                <path
+                  d="M14 2V8H20"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+                <path
+                  d="M16 13H8"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+                <path
+                  d="M16 17H8"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+                <path
+                  d="M10 9H8"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+              </svg>
+              <span *ngIf="!uploadFile.name"
+                >Перетащите файл сюда или нажмите для выбора</span
+              >
+              <span *ngIf="uploadFile.name" class="file-info">
+                {{ uploadFile.name }}
+                <small class="file-size"
+                  >({{ formatFileSize(uploadFile.size) }})</small
+                >
+              </span>
+            </div>
+          </div>
         </label>
         <button
           tuiButton
