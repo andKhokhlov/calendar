@@ -87,12 +87,16 @@ export async function uploadImage(req: Request, res: Response) {
   try {
     const { type, date } = req.body;
     const file = req.file;
-    if (!file || !type || !date) {
-      return res.status(400).json({ message: 'Необходимы файл, type и date' });
+    if (!file || !type) {
+      return res.status(400).json({ message: 'Необходимы файл и type' });
     }
+
+    // Для сессии используем 'current' как дату, если дата не указана
+    const imageDate = date || 'current';
+
     await pool.query(
       'INSERT INTO images (type, date, data, mimetype) VALUES ($1, $2, $3, $4) ON CONFLICT (type, date) DO UPDATE SET data = EXCLUDED.data, mimetype = EXCLUDED.mimetype, uploaded_at = CURRENT_TIMESTAMP',
-      [type, date, file.buffer, file.mimetype]
+      [type, imageDate, file.buffer, file.mimetype]
     );
     res.json({ message: 'Картинка загружена' });
   } catch (e) {

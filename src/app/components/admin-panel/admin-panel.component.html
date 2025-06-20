@@ -207,6 +207,7 @@
         <label>
           Тип:
           <tui-combo-box
+            [stringify]="stringify"
             [(ngModel)]="uploadType"
             name="uploadType"
             required
@@ -214,19 +215,18 @@
           >
             <tui-data-list-wrapper
               *tuiDataList
-              [items]="uploadTypes"
+              [items]="uploadTypes | tuiFilterByInput"
+              [itemContent]="stringify | tuiStringifyContent"
             ></tui-data-list-wrapper>
           </tui-combo-box>
         </label>
-        <label>
+        <label *ngIf="uploadType?.value === 'replacement'">
           Дата:
-          <input
-            type="date"
-            [(ngModel)]="uploadDate"
+          <tui-input-date
+            [(ngModel)]="uploadTuiDate"
             name="uploadDate"
             required
-            placeholder="ДД.ММ.ГГГГ"
-          />
+          ></tui-input-date>
         </label>
         <label>
           Файл:
@@ -241,7 +241,12 @@
           tuiButton
           appearance="primary"
           type="submit"
-          [disabled]="!uploadFile || !uploadDate || !uploadType || uploading"
+          [disabled]="
+            !uploadFile.name ||
+            !uploadType ||
+            uploading ||
+            (uploadType?.value === 'replacement' && !uploadTuiDate)
+          "
           class="upload-btn"
         >
           Загрузить

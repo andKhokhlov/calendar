@@ -15,12 +15,8 @@ export class SessionComponent implements OnInit {
   constructor(private scheduleService: ScheduleService) {}
 
   ngOnInit() {
-    const today = new Date();
-    const yyyy = today.getFullYear();
-    const mm = String(today.getMonth() + 1).padStart(2, '0');
-    const dd = String(today.getDate()).padStart(2, '0');
-    const dateStr = `${yyyy}-${mm}-${dd}`;
-    this.scheduleService.getImage('session', dateStr).subscribe({
+    // Загружаем одну картинку для сессии без привязки к дате
+    this.scheduleService.getImage('session', 'current').subscribe({
       next: (blob) => {
         this.imageUrl = URL.createObjectURL(blob);
         this.loading = false;

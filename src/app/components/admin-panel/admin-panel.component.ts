@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from '../../service/auth.service';
 import { ScheduleService } from '../../service/schedule.service';
-import { TuiButton } from '@taiga-ui/core';
+import { TuiButton, TuiTextfield } from '@taiga-ui/core';
 import { TuiTable } from '@taiga-ui/addon-table';
 import { NgForOf, NgIf } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -12,7 +12,12 @@ import {
   TuiFilterByInputPipe,
   TuiStringifyContentPipe,
 } from '@taiga-ui/kit';
-import { TuiInputModule, TuiComboBoxModule } from '@taiga-ui/legacy';
+
+import {
+  TuiInputModule,
+  TuiComboBoxModule,
+  TuiInputDateModule,
+} from '@taiga-ui/legacy';
 
 import { TuiDay } from '@taiga-ui/cdk';
 
@@ -33,6 +38,8 @@ import { TuiDay } from '@taiga-ui/cdk';
     TuiDataListWrapper,
     TuiFilterByInputPipe,
     TuiStringifyContentPipe,
+    TuiInputDateModule,
+    TuiTextfield,
   ],
 })
 export class AdminPanelComponent implements OnInit {
@@ -109,9 +116,12 @@ export class AdminPanelComponent implements OnInit {
   stringify = (item: { name: string } | null | undefined): string =>
     item?.name || '';
 
-  uploadTypes: Array<'replacement' | 'session'> = ['replacement', 'session'];
-  uploadType: 'replacement' | 'session' | '' = '';
-  uploadDate: string = '';
+  uploadTypes = [
+    { name: 'Замена', value: 'replacement' as const },
+    { name: 'Сессия', value: 'session' as const },
+  ];
+  uploadType: { name: string; value: 'replacement' | 'session' } | null = null;
+  uploadTuiDate: TuiDay | null = null;
   uploadFile: File = new File([''], '');
   uploadPreview: string | null = null;
   uploading = false;
@@ -238,17 +248,27 @@ export class AdminPanelComponent implements OnInit {
   }
 
   onUploadImage() {
-    if (!this.uploadFile.name || !this.uploadDate || !this.uploadType) {
+    if (!this.uploadFile.name || !this.uploadType) {
       return;
     }
+
+    const uploadDate = this.uploadTuiDate
+      ? this.uploadTuiDate.getFormattedDay('YMD', '-')
+      : '';
+
+    // Для сессии дата не требуется
+    if (this.uploadType.value === 'replacement' && !uploadDate) {
+      return;
+    }
+
     this.uploading = true;
     this.uploadStatus = '';
+
+    // Для сессии используем пустую строку как дату
+    const dateToUse = this.uploadType.value === 'session' ? '' : uploadDate;
+
     this.scheduleService
-      .uploadImage(
-        this.uploadType as 'replacement' | 'session',
-        this.uploadDate,
-        this.uploadFile
-      )
+      .uploadImage(this.uploadType.value, dateToUse, this.uploadFile)
       .subscribe({
         next: () => {
           this.uploadStatus = 'Картинка успешно загружена!';
