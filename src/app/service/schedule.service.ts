@@ -55,8 +55,6 @@ export class ScheduleService {
   }
 
   private loadSchedule(): void {
-    // Here you would typically load the schedule from your backend
-    // For now, we'll use a sample schedule
     const sampleSchedule: WeeklySchedule = {
       numerator: [
         {
@@ -117,11 +115,9 @@ export class ScheduleService {
     const dayIndex = schedule.numerator.findIndex((d) => d.day === subject.day);
 
     if (dayIndex === -1) {
-      // Add new day
       schedule.numerator.push({ day: subject.day, subjects: [subject] });
       schedule.denominator.push({ day: subject.day, subjects: [subject] });
     } else {
-      // Add subject to existing day
       schedule.numerator[dayIndex].subjects.push(subject);
       schedule.denominator[dayIndex].subjects.push(subject);
     }

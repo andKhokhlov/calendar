@@ -1,9 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { ScheduleService } from '../../service/schedule.service';
+import { NgIf } from '@angular/common';
 
 @Component({
   selector: 'app-session',
   standalone: true,
+  imports: [NgIf],
   templateUrl: './session.component.html',
   styleUrls: ['./session.component.scss'],
 })
