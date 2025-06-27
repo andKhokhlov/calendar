@@ -4,7 +4,7 @@ WORKDIR /app
 
 COPY package*.json ./
 RUN npm install
-RUN chmod +x node_modules/.bin/ts-node
+RUN chmod +x node_modules/.bin/tsc
 
 COPY . .
 
