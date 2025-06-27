@@ -4,10 +4,10 @@ WORKDIR /app
 
 COPY package*.json ./
 RUN npm install
-RUN chmod +x node_modules/.bin/tsc
 
 COPY . .
 
+RUN chmod +x node_modules/.bin/tsc
 RUN npm run build
 
 EXPOSE 3001
