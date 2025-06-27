@@ -1,6 +1,6 @@
 FROM nginx:alpine
 
-COPY dist/calendar/browser /usr/share/nginx/html
+COPY dist/calendar /usr/share/nginx/html
 COPY nginx.conf /etc/nginx/conf.d/default.conf
 
 EXPOSE 80
